@@ -7,6 +7,24 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <description>Clawd's macOS releases</description>
     <language>en</language>
     <item>
+      <title>Clawd 1.1.0</title>
+      <pubDate>Mon, 05 Oct 2026 12:13:57 GMT</pubDate>
+      <sparkle:version>1.1.0</sparkle:version>
+      <sparkle:shortVersionString>1.1.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+      <sparkle:fullReleaseNotesLink>https://github.com/joonseo1227/clawd-for-orca/releases/tag/macos-v1.1.0</sparkle:fullReleaseNotesLink>
+      <description sparkle:format="markdown">**Answer Claude's questions in the chat.** When Claude asks you something with its question tool, the chat shows each question with its choices and a field for an answer of your own, and sends your answers to the agent. One question with one choice is answered with a click or ⌘1–⌘9.
+
+**Sessions started in Orca's chat.** Agents you start in Orca's chat view, which run without a terminal, can now be messaged and answered from Clawd: replies, Claude's questions and permission requests, with their steps in the timeline.
+
+**Install:** download `Clawd-1.1.0-macOS.dmg`, open it and drag `Clawd.app` to the Applications folder. The app is signed and notarized by Apple. Clawd 1.0.0 offers this update on its own within a day.
+
+**Requires** an Apple silicon Mac with macOS 15 or later, and Orca.
+
+SHA-256: `edf31470329b2fbb1eab49fae892750aac50670b34e5ebefbefc7c90f71866be`</description>
+      <enclosure url="https://github.com/joonseo1227/clawd-for-orca/releases/download/macos-v1.1.0/Clawd-1.1.0-macOS.dmg" length="3761614" type="application/octet-stream" sparkle:edSignature="0sxNFYV1TBpZf0Sd18X4A2QPYbHXHpmN1z/m4+5V62XMAj+ftWmr68ngln7hcQEnvvgfKIN9uHoHK+NJiVcwDg=="></enclosure>
+    </item>
+    <item>
       <title>Clawd 1.0.0</title>
       <pubDate>Mon, 05 Oct 2026 10:14:50 GMT</pubDate>
       <sparkle:version>1.0.0</sparkle:version>
@@ -18,6 +36,6 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     </item>
   </channel>
 </rss><!-- sparkle-signatures:
-edSignature: 9HgeZ7SheqJ2G6jmimXyhfIy+h8L5MiAaYBRdtJ2+0zNDF1aXdZpbBfj1AeqxPNuThhnmGuzhQCz+U0MNohhBQ==
-length: 1420
+edSignature: Iu7OSIeS4Jv9z4QiR3pxz8oS/nS7cEYmjSBaGrjPPbTaBS1JMlzn5I/IpQO6SJHlCzpDe32IFuVWBIrtDP02Aw==
+length: 3089
 -->
