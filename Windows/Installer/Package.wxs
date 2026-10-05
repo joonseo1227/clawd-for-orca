@@ -1,0 +1,80 @@
+<!--
+  Clawd's Windows installer. Installs for the current user only, with no administrator prompt:
+  the app goes to %LOCALAPPDATA%\Programs\Clawd, with a Start menu shortcut and an entry in
+  Settings > Apps for uninstalling. Clawd's own settings in %LOCALAPPDATA%\Clawd are kept.
+-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="Clawd" Manufacturer="joonseo1227" Version="$(var.MsiVersion)"
+           UpgradeCode="EBE48116-02FD-438A-8A82-0F7CF4953E28" Scope="perUserOrMachine" Compressed="yes">
+    <SummaryInformation Description="Clawd for Orca" />
+
+    <!-- A new build replaces the installed one, including a rebuild of the same version. -->
+    <MajorUpgrade AllowSameVersionUpgrades="yes"
+                  DowngradeErrorMessage="A newer version of Clawd is already installed." />
+    <!-- Running the installed MSI again reinstalls it, instead of a maintenance run that changes
+         nothing, so it replaces the files and starts Clawd like an upgrade. -->
+    <SetProperty Id="REINSTALL" Value="ALL" Before="CostInitialize" Sequence="both"
+                 Condition="Installed AND NOT REMOVE AND NOT REINSTALL" />
+    <SetProperty Id="REINSTALLMODE" Value="emus" After="SetREINSTALL" Sequence="both"
+                 Condition="Installed AND NOT REMOVE AND REINSTALL=&quot;ALL&quot;" />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Icon Id="Clawd.ico" SourceFile="$(var.PublishDir)Assets\Clawd.ico" />
+    <Property Id="ARPPRODUCTICON" Value="Clawd.ico" />
+    <Property Id="ARPURLINFOABOUT" Value="https://github.com/joonseo1227/clawd-for-orca" />
+    <Property Id="ARPNOMODIFY" Value="1" />
+
+    <StandardDirectory Id="ProgramFiles6432Folder">
+      <Directory Id="INSTALLFOLDER" Name="Clawd" />
+    </StandardDirectory>
+
+    <Feature Id="Main">
+      <ComponentGroupRef Id="AppFiles" />
+      <ComponentRef Id="ClawdExe" />
+      <ComponentRef Id="Cleanup" />
+    </Feature>
+
+    <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
+      <Files Include="$(var.PublishDir)**">
+        <Exclude Files="$(var.PublishDir)Clawd.exe" />
+      </Files>
+    </ComponentGroup>
+
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="ClawdExe">
+        <File Id="ClawdExe" Source="$(var.PublishDir)Clawd.exe" KeyPath="yes">
+          <Shortcut Id="StartMenuShortcut" Directory="ProgramMenuFolder" Name="Clawd"
+                    Description="Clawd for Orca" WorkingDirectory="INSTALLFOLDER" Advertise="yes" Icon="Clawd.ico" />
+        </File>
+      </Component>
+      <Component Id="Cleanup">
+        <RegistryValue Root="HKCU" Key="Software\joonseo1227\Clawd" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <!-- Quit a running Clawd before Windows Installer checks for files in use. Clawd has no main
+         window to send WM_CLOSE to, so the installed Clawd.exe is run with the quit argument, which
+         asks the running copy to quit and waits for it to exit (Program.QuitArgument). -->
+    <SetProperty Id="WixQuietExecCmdLine" Before="QuitClawd" Sequence="execute"
+                 Value="&quot;[#ClawdExe]&quot; --quit" />
+    <CustomAction Id="QuitClawd" BinaryRef="Wix4UtilCA_X64" DllEntry="WixQuietExec" Execute="immediate" Return="ignore" />
+
+    <!-- "Start Clawd when I sign in" writes a Run value at runtime, which Windows Installer doesn't
+         know about; remove it on uninstall (not on upgrade, which keeps the same path). -->
+    <SetProperty Id="RemoveRunValue" Before="RemoveRunValue" Sequence="execute"
+                 Value="&quot;[SystemFolder]reg.exe&quot; delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Clawd /f" />
+    <CustomAction Id="RemoveRunValue" BinaryRef="Wix4UtilCA_X64" DllEntry="WixQuietExec" Execute="deferred" Impersonate="yes" Return="ignore" />
+
+    <!-- Start Clawd when an interactive install, upgrade or reinstall finishes, and after Clawd's own
+         update, which runs this MSI with only a progress bar (msiexec /passive, UILevel 3) and passes
+         CLAWD_RELAUNCH=1 because the Clawd it quit should come back (AppController.Updates.cs). -->
+    <Property Id="CLAWD_RELAUNCH" Secure="yes" />
+    <CustomAction Id="LaunchClawd" BinaryRef="Wix4UtilCA_X64" DllEntry="WixShellExec" Impersonate="yes" Return="ignore" />
+    <Property Id="WixShellExecTarget" Value="[#ClawdExe]" />
+    <InstallExecuteSequence>
+      <Custom Action="QuitClawd" Before="InstallValidate" Condition="Installed OR WIX_UPGRADE_DETECTED" />
+      <Custom Action="RemoveRunValue" Before="RemoveFiles" Condition="REMOVE~=&quot;ALL&quot; AND NOT UPGRADINGPRODUCTCODE" />
+      <Custom Action="LaunchClawd" After="InstallFinalize" Condition="NOT REMOVE AND (UILevel &gt;= 4 OR CLAWD_RELAUNCH = &quot;1&quot;)" />
+    </InstallExecuteSequence>
+  </Package>
+</Wix>

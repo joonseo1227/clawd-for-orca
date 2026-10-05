@@ -1,0 +1,12 @@
+.build/
+.swiftpm/
+/macOS/Clawd.app
+/macOS/clawd
+.idea/
+*.zip
+.DS_Store
+dist/
+/Promo/out/
+# downloaded by Promo/assets/fetch.sh
+/Promo/assets/*
+!/Promo/assets/fetch.sh

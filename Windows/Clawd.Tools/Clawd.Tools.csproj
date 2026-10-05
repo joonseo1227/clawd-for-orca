@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Developer commands that run on any OS: icon generation, demo data, and the Mac app's
+       debug modes (orca, sessions, timeline). -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>clawd-tools</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Clawd.Core\Clawd.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,2035 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%@  finished %@": {
+      "comment": "Agent name, then when it finished, e.g. just now or 3 min ago",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@  %2$@ 완료"
+          }
+        }
+      }
+    },
+    "%@ ago": {
+      "comment": "%@ is a duration, e.g. 3 min",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 전"
+          }
+        }
+      }
+    },
+    "%@ · for %@": {
+      "comment": "Agent name, then how long it has been waiting, e.g. 3 min",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@ 전부터"
+          }
+        }
+      }
+    },
+    "%@ · just now": {
+      "comment": "Agent that started waiting less than a minute ago",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · 방금부터"
+          }
+        }
+      }
+    },
+    "%lld done": {
+      "comment": "Menu bar: agents that finished",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료 %lld"
+          }
+        }
+      }
+    },
+    "%lld hr %lld min": {
+      "comment": "Duration in hours and minutes",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld시간 %2$lld분"
+          }
+        }
+      }
+    },
+    "%lld min": {
+      "comment": "Duration in minutes",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld분"
+          }
+        }
+      }
+    },
+    "%lld running": {
+      "comment": "Menu bar: agents working",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "작업 %lld"
+          }
+        }
+      }
+    },
+    "%lld steps": {
+      "comment": "Steps the agent took in one turn",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld step"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld steps"
+                }
+              }
+            }
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "단계 %lld개"
+          }
+        }
+      }
+    },
+    "%lld waiting": {
+      "comment": "Menu bar: agents waiting for the user",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "확인 %lld"
+          }
+        }
+      }
+    },
+    "%lld working": {
+      "comment": "Number of agents working",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "작업 중 %lld개"
+          }
+        }
+      }
+    },
+    "+%lld more": {
+      "comment": "More tools in a step summary, after the first three",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "외 %lld개"
+          }
+        }
+      }
+    },
+    "+%lld more · %@": {
+      "comment": "More waiting agents, then the hint for the first one",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "외 %1$lld개 더 · %2$@"
+          }
+        }
+      }
+    },
+    "1. In Orca’s left sidebar, open **Orca Mobile**.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1. Orca 왼쪽 사이드바에서 **Orca 모바일**을 열어요."
+          }
+        }
+      }
+    },
+    "2. Generate a QR code and click **Copy pairing code**.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2. QR 코드를 생성하고 **페어링 코드 복사**를 눌러요."
+          }
+        }
+      }
+    },
+    "3. Paste it below.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3. 아래에 붙여 넣어요."
+          }
+        }
+      }
+    },
+    "About": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "정보"
+          }
+        }
+      }
+    },
+    "All agents are resting": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "에이전트가 다 쉬고 있어요"
+          }
+        }
+      }
+    },
+    "Allow": {
+      "comment": "Permission dialog answer",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "허용"
+          }
+        }
+      }
+    },
+    "Allow Clawd in System Settings > Login Items": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시스템 설정 > 로그인 항목에서 Clawd를 허용해 주세요"
+          }
+        }
+      }
+    },
+    "Allow, then auto mode": {
+      "comment": "Permission dialog answer: Claude Code’s “Yes, and switch to auto mode”",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "허용 후 자동 모드"
+          }
+        }
+      }
+    },
+    "Already answered, so nothing was sent": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이미 처리된 요청이라 아무것도 보내지 않았어요"
+          }
+        }
+      }
+    },
+    "Always": {
+      "comment": "When to send system notifications",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "항상"
+          }
+        }
+      }
+    },
+    "Always allow": {
+      "comment": "Permission dialog answer: allow and don’t ask again",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "항상 허용"
+          }
+        }
+      }
+    },
+    "An unofficial app, not affiliated with Anthropic or Stably AI.": {
+      "comment": "Settings: note under About",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anthropic, Stably AI와 관계없는 비공식 앱이에요."
+          }
+        }
+      }
+    },
+    "Another app already uses this shortcut. Choose a different one.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다른 앱이 이미 쓰고 있는 단축키예요. 다른 조합을 골라 주세요."
+          }
+        }
+      }
+    },
+    "Another app is using %@. You can change it in Settings.": {
+      "comment": "%@ is a keyboard shortcut such as ⌥Space",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다른 앱이 %@를 쓰고 있어요. 설정에서 바꿀 수 있어요"
+          }
+        }
+      }
+    },
+    "Answer the permission request in Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca에서 권한 요청에 답해 주세요"
+          }
+        }
+      }
+    },
+    "Answer with the buttons above or ⌘1–%lld": {
+      "comment": "Shortcuts ⌘1 to ⌘n pick a permission answer",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "위 버튼이나 ⌘1–%lld 키로 답해 주세요"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "취소"
+          }
+        }
+      }
+    },
+    "Can’t find Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca를 찾을 수 없어요"
+          }
+        }
+      }
+    },
+    "Can’t find the Orca app": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 앱을 찾을 수 없어요"
+          }
+        }
+      }
+    },
+    "Can’t read the pairing code. Paste the code exactly as copied from Orca.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "페어링 코드를 읽을 수 없어요. Orca에서 복사한 코드를 그대로 붙여 넣어 주세요."
+          }
+        }
+      }
+    },
+    "Can’t read the terminal screen. If the terminal was closed, check in Orca.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "터미널 화면을 읽을 수 없어요. 터미널이 닫혔다면 Orca에서 확인해 주세요."
+          }
+        }
+      }
+    },
+    "Celebrate": {
+      "comment": "Something Clawd does, in the Tricks menu",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "축하 파티"
+          }
+        }
+      }
+    },
+    "Chat": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "대화"
+          }
+        }
+      }
+    },
+    "Check for Updates…": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "업데이트 확인…"
+          }
+        }
+      }
+    },
+    "Check for updates automatically": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "업데이트 자동 확인"
+          }
+        }
+      }
+    },
+    "Clawd %@ is available": {
+      "comment": "%@ is a version such as 1.0.1",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd %@ 버전이 나왔어요"
+          }
+        }
+      }
+    },
+    "Clawd Settings": {
+      "comment": "Settings window title",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd 설정"
+          }
+        }
+      }
+    },
+    "Clawd shows the coding agents running in Orca. Install Orca and it connects right away.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd는 Orca에서 실행 중인 코딩 에이전트를 보여줘요. Orca를 설치하면 바로 연결돼요."
+          }
+        }
+      }
+    },
+    "Clawd watches the coding agents working in Orca and lets you know when they need an answer or finish. Click Clawd to start chatting.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca에서 일하는 코딩 에이전트를 지켜보다가 답이 필요하거나 일이 끝나면 알려 줘요. 클릭하면 바로 대화할 수 있어요."
+          }
+        }
+      }
+    },
+    "Clawd will open when you log in": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "로그인하면 Clawd가 같이 켜져요"
+          }
+        }
+      }
+    },
+    "Click to change": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "클릭해서 바꾸기"
+          }
+        }
+      }
+    },
+    "Click to chat with your agents. Double-click to open Orca.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "클릭하면 에이전트와 대화, 두 번 클릭하면 Orca 열기"
+          }
+        }
+      }
+    },
+    "Click to keep talking": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "클릭해서 이어서 말하기"
+          }
+        }
+      }
+    },
+    "Click to update": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "클릭해서 업데이트"
+          }
+        }
+      }
+    },
+    "Click to view": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "클릭해서 보기"
+          }
+        }
+      }
+    },
+    "Close": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "닫기"
+          }
+        }
+      }
+    },
+    "Close chat": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "대화 닫기"
+          }
+        }
+      }
+    },
+    "Code": {
+      "comment": "Something Clawd does, in the Tricks menu",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "코딩하기"
+          }
+        }
+      }
+    },
+    "Connected to Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca와 연결했어요"
+          }
+        }
+      }
+    },
+    "Connecting to Orca…": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca에 연결하는 중…"
+          }
+        }
+      }
+    },
+    "Connection error": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "연결 오류"
+          }
+        }
+      }
+    },
+    "Couldn’t change the login item: %@": {
+      "comment": "%@ is the system error message",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "로그인 항목을 바꾸지 못했어요: %@"
+          }
+        }
+      }
+    },
+    "Couldn’t connect to Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca와 연결하지 못했어요"
+          }
+        }
+      }
+    },
+    "Couldn’t read the pairing from the keychain": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "키체인에서 연결 정보를 읽지 못했어요"
+          }
+        }
+      }
+    },
+    "Couldn’t save the pairing to the keychain": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "연결 정보를 키체인에 저장하지 못했어요"
+          }
+        }
+      }
+    },
+    "Couldn’t send": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "보내지 못했어요"
+          }
+        }
+      }
+    },
+    "Couldn’t send the answer. Open it in Orca to check": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "응답을 보내지 못했어요. Orca에서 열어서 확인해 주세요"
+          }
+        }
+      }
+    },
+    "Couldn’t send. Open it in Orca to check": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "보내지 못했어요. Orca에서 열어서 확인해 주세요"
+          }
+        }
+      }
+    },
+    "Couldn’t start the live connection to Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 실시간 연결을 시작하지 못했어요"
+          }
+        }
+      }
+    },
+    "Couldn’t start the live connection to Orca: %@": {
+      "comment": "%@ is an error message",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 실시간 연결을 시작하지 못했어요: %@"
+          }
+        }
+      }
+    },
+    "Deny": {
+      "comment": "Permission dialog answer",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "거절"
+          }
+        }
+      }
+    },
+    "Development build": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "개발 빌드"
+          }
+        }
+      }
+    },
+    "Disconnected the live connection to Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 실시간 연결을 해제했어요"
+          }
+        }
+      }
+    },
+    "Done": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료"
+          }
+        }
+      }
+    },
+    "Done · %@": {
+      "comment": "%@ is when it finished, e.g. 3 min ago",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료 · %@"
+          }
+        }
+      }
+    },
+    "Download": {
+      "comment": "Downloads Orca",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "내려받기"
+          }
+        }
+      }
+    },
+    "Download Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 내려받기"
+          }
+        }
+      }
+    },
+    "Drink coffee": {
+      "comment": "Something Clawd does, in the Tricks menu",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "커피 마시기"
+          }
+        }
+      }
+    },
+    "Drop to add the paths to your message": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "놓으면 메시지에 경로를 넣어요"
+          }
+        }
+      }
+    },
+    "Drop to paste the paths into the terminal": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "놓으면 터미널에 경로를 붙여 넣어요"
+          }
+        }
+      }
+    },
+    "Everyone’s resting": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다들 쉬는 중"
+          }
+        }
+      }
+    },
+    "Follow the pointer": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "마우스 따라오기"
+          }
+        }
+      }
+    },
+    "General": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "일반"
+          }
+        }
+      }
+    },
+    "Get started": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시작하기"
+          }
+        }
+      }
+    },
+    "Give a snack": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "간식 주기"
+          }
+        }
+      }
+    },
+    "Hammer": {
+      "comment": "Something Clawd does, in the Tricks menu",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "망치질"
+          }
+        }
+      }
+    },
+    "Hide Clawd": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd 숨기기"
+          }
+        }
+      }
+    },
+    "Juggle": {
+      "comment": "Something Clawd does, in the Tricks menu",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저글링"
+          }
+        }
+      }
+    },
+    "Just started waiting · Click to reply": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "방금부터 기다리는 중 · 클릭해서 답하기"
+          }
+        }
+      }
+    },
+    "Just started waiting · Click to view": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "방금부터 기다리는 중 · 클릭해서 보기"
+          }
+        }
+      }
+    },
+    "Listen to music": {
+      "comment": "Something Clawd does, in the Tricks menu",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "음악 듣기"
+          }
+        }
+      }
+    },
+    "Live connection error: %@": {
+      "comment": "%@ is an error message",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "실시간 연결 오류: %@"
+          }
+        }
+      }
+    },
+    "Live connection to Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca와 실시간 연결"
+          }
+        }
+      }
+    },
+    "Live terminal": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "실시간 터미널"
+          }
+        }
+      }
+    },
+    "Look around": {
+      "comment": "Something Clawd does, in the Tricks menu",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "두리번거리기"
+          }
+        }
+      }
+    },
+    "Made by": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "만든 사람"
+          }
+        }
+      }
+    },
+    "Meet Clawd": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd를 만나 보세요"
+          }
+        }
+      }
+    },
+    "Message": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "메시지"
+          }
+        }
+      }
+    },
+    "Message with Clawd": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd로 말 걸기"
+          }
+        }
+      }
+    },
+    "Needs attention": {
+      "comment": "Group of agents waiting for the user",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "확인 필요"
+          }
+        }
+      }
+    },
+    "Never": {
+      "comment": "When to send system notifications",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "보내지 않음"
+          }
+        }
+      }
+    },
+    "No agents running": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "실행 중인 에이전트가 없어요"
+          }
+        }
+      }
+    },
+    "No output": {
+      "comment": "A tool call that printed nothing",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "출력 없음"
+          }
+        }
+      }
+    },
+    "Not installed": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "설치 안 됨"
+          }
+        }
+      }
+    },
+    "Not running": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "꺼져 있음"
+          }
+        }
+      }
+    },
+    "Notification sound": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "알림 소리"
+          }
+        }
+      }
+    },
+    "Open": {
+      "comment": "Opens the Orca app",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "열기"
+          }
+        }
+      }
+    },
+    "Open Clawd at login": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "로그인 시 Clawd 실행"
+          }
+        }
+      }
+    },
+    "Open Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 열기"
+          }
+        }
+      }
+    },
+    "Open Orca and your agents show up here.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca를 열면 에이전트가 여기에 나타나요."
+          }
+        }
+      }
+    },
+    "Open Settings": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "설정 열기"
+          }
+        }
+      }
+    },
+    "Open at login": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "로그인 시 실행"
+          }
+        }
+      }
+    },
+    "Open at login turned off": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "로그인 시 실행을 껐어요"
+          }
+        }
+      }
+    },
+    "Open in Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca에서 열기"
+          }
+        }
+      }
+    },
+    "Open it in Orca to check": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca에서 열어서 확인해 주세요"
+          }
+        }
+      }
+    },
+    "Option %lld": {
+      "comment": "A permission dialog answer by its number",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld번"
+          }
+        }
+      }
+    },
+    "Optional · Shows the terminal with its colors and cursor": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "선택 사항 · 색과 커서까지 그대로 보여요"
+          }
+        }
+      }
+    },
+    "Orca agent integration": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 에이전트 연동"
+          }
+        }
+      }
+    },
+    "Orca closed the connection without sending the terminal screen": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca가 터미널 화면을 보내지 않고 연결을 닫았어요"
+          }
+        }
+      }
+    },
+    "Orca closed the live connection": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca가 실시간 연결을 닫았어요"
+          }
+        }
+      }
+    },
+    "Orca integration is off": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 연동이 꺼져 있어요"
+          }
+        }
+      }
+    },
+    "Orca integration off": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 연동 꺼짐"
+          }
+        }
+      }
+    },
+    "Orca integration turned off": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 연동을 껐어요"
+          }
+        }
+      }
+    },
+    "Orca integration turned on": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 연동을 켰어요"
+          }
+        }
+      }
+    },
+    "Orca isn’t running": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca가 꺼져 있어요"
+          }
+        }
+      }
+    },
+    "Pair": {
+      "comment": "Confirms the pairing code",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "연결"
+          }
+        }
+      }
+    },
+    "Paired": {
+      "comment": "The live terminal is paired with Orca",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "연결됨"
+          }
+        }
+      }
+    },
+    "Paired with a code from Orca Mobile": {
+      "comment": "Settings: subtitle under Live terminal",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 모바일의 페어링 코드로 연결해요"
+          }
+        }
+      }
+    },
+    "Pair…": {
+      "comment": "Button that opens the Orca pairing sheet",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "연결…"
+          }
+        }
+      }
+    },
+    "Paste": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "붙여넣기"
+          }
+        }
+      }
+    },
+    "Permission needed": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "권한 필요"
+          }
+        }
+      }
+    },
+    "Permission needed · %@": {
+      "comment": "%@ is when it started, e.g. 3 min ago",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "권한 필요 · %@"
+          }
+        }
+      }
+    },
+    "Permission request": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "권한 요청"
+          }
+        }
+      }
+    },
+    "Press Esc to cancel": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esc를 누르면 취소돼요"
+          }
+        }
+      }
+    },
+    "Put to sleep": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "재우기"
+          }
+        }
+      }
+    },
+    "Quit Clawd": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd 종료"
+          }
+        }
+      }
+    },
+    "Recently finished": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "최근 완료"
+          }
+        }
+      }
+    },
+    "Reconnecting to Orca…": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca에 다시 연결하는 중…"
+          }
+        }
+      }
+    },
+    "Reply": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "답장"
+          }
+        }
+      }
+    },
+    "Reply in Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca에서 답하기"
+          }
+        }
+      }
+    },
+    "Reply needed": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "답장 필요"
+          }
+        }
+      }
+    },
+    "Reply needed · %@": {
+      "comment": "%@ is when it started, e.g. 3 min ago",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "답장 필요 · %@"
+          }
+        }
+      }
+    },
+    "Reply with Clawd": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd로 답하기"
+          }
+        }
+      }
+    },
+    "Reset to default": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기본값으로"
+          }
+        }
+      }
+    },
+    "Reset to default (%@)": {
+      "comment": "%@ is the default keyboard shortcut",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기본값(%@)으로 되돌리기"
+          }
+        }
+      }
+    },
+    "Resting": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "쉬는 중"
+          }
+        }
+      }
+    },
+    "Resting %lld": {
+      "comment": "Sidebar section of idle agents, with their count",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "쉬는 중 %lld"
+          }
+        }
+      }
+    },
+    "Run Claude or Codex in Orca and it shows up here.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca에서 Claude나 Codex를 실행하면 여기에 나타나요."
+          }
+        }
+      }
+    },
+    "Running %@": {
+      "comment": "%@ is a tool name such as Bash",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 실행 중"
+          }
+        }
+      }
+    },
+    "Running · %lld agents": {
+      "comment": "Orca is running, with this many agents",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Running · %lld agent"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Running · %lld agents"
+                }
+              }
+            }
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "실행 중 · 에이전트 %lld개"
+          }
+        }
+      }
+    },
+    "Send": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "보내기"
+          }
+        }
+      }
+    },
+    "Send (Return)": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "보내기 (Enter)"
+          }
+        }
+      }
+    },
+    "Sent to %@": {
+      "comment": "%@ is the agent (worktree) name",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@에게 보냈어요"
+          }
+        }
+      }
+    },
+    "Settings…": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "설정…"
+          }
+        }
+      }
+    },
+    "Shortcuts": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "단축키"
+          }
+        }
+      }
+    },
+    "Show Clawd": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd 보이기"
+          }
+        }
+      }
+    },
+    "Show Clawd on screen": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "화면에 Clawd 보이기"
+          }
+        }
+      }
+    },
+    "Show in Clawd": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd에서 보기"
+          }
+        }
+      }
+    },
+    "Sneeze": {
+      "comment": "Something Clawd does, in the Tricks menu",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "재채기"
+          }
+        }
+      }
+    },
+    "Status": {
+      "comment": "Settings: Orca's state (running, closed, not installed)",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "상태"
+          }
+        }
+      }
+    },
+    "Stop following": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "그만 따라오기"
+          }
+        }
+      }
+    },
+    "Stretch": {
+      "comment": "Something Clawd does, in the Tricks menu",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기지개"
+          }
+        }
+      }
+    },
+    "Summon Clawd from anywhere": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "어디서든 Clawd 부르기"
+          }
+        }
+      }
+    },
+    "Sweep": {
+      "comment": "Something Clawd does, in the Tricks menu",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "청소하기"
+          }
+        }
+      }
+    },
+    "Switch between chat and terminal": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "대화 / 터미널 전환"
+          }
+        }
+      }
+    },
+    "Switch between chat and terminal (⌘T)": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "대화 / 터미널 전환 (⌘T)"
+          }
+        }
+      }
+    },
+    "System notifications": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시스템 알림"
+          }
+        }
+      }
+    },
+    "Talk to Clawd": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd에게 말 걸기"
+          }
+        }
+      }
+    },
+    "Task complete": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "작업 완료"
+          }
+        }
+      }
+    },
+    "Terminal": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "터미널"
+          }
+        }
+      }
+    },
+    "The Orca connection expired. Pair again in Settings": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca 연결이 만료됐어요. 설정에서 다시 연결해 주세요"
+          }
+        }
+      }
+    },
+    "The code is stored only in this Mac’s keychain.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "코드는 이 Mac의 키체인에만 저장돼요."
+          }
+        }
+      }
+    },
+    "The live terminal’s bridge script is missing. Reinstall Clawd": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "실시간 터미널의 브리지 스크립트가 없어요. Clawd를 다시 설치해 주세요"
+          }
+        }
+      }
+    },
+    "Think": {
+      "comment": "Something Clawd does, in the Tricks menu",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "생각하기"
+          }
+        }
+      }
+    },
+    "Thinking": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "생각"
+          }
+        }
+      }
+    },
+    "Thinking %lld": {
+      "comment": "Number of thinking steps in a step summary",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "생각 %lld"
+          }
+        }
+      }
+    },
+    "Thinking…": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "생각하는 중"
+          }
+        }
+      }
+    },
+    "To show the terminal with its colors and cursor, Clawd needs a live connection to Orca.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "터미널을 색과 커서까지 그대로 보려면 Orca의 실시간 연결이 필요해요."
+          }
+        }
+      }
+    },
+    "Took %@ · Click to keep talking": {
+      "comment": "%@ is how long the task took, e.g. 3 min",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 걸림 · 클릭해서 이어서 말하기"
+          }
+        }
+      }
+    },
+    "Took %@ · Click to view": {
+      "comment": "%@ is how long the task took, e.g. 3 min",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 걸림 · 클릭해서 보기"
+          }
+        }
+      }
+    },
+    "Tool": {
+      "comment": "Name for a tool call without one",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "도구"
+          }
+        }
+      }
+    },
+    "Tricks": {
+      "comment": "Submenu of animations Clawd can perform",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "장기자랑"
+          }
+        }
+      }
+    },
+    "Type a shortcut": {
+      "comment": "Shown while recording a keyboard shortcut",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "단축키를 누르세요"
+          }
+        }
+      }
+    },
+    "Typing  %@": {
+      "comment": "Text being composed with an input method, before it goes to the terminal",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "입력 중  %@"
+          }
+        }
+      }
+    },
+    "Unknown error": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "알 수 없는 오류"
+          }
+        }
+      }
+    },
+    "Unpair": {
+      "comment": "Removes the Orca pairing",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "연결 해제"
+          }
+        }
+      }
+    },
+    "Update to Clawd %@…": {
+      "comment": "Menu item; %@ is a version such as 1.0.1",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd %@ 업데이트…"
+          }
+        }
+      }
+    },
+    "Update to-do list": {
+      "comment": "Summary of a TodoWrite tool call",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "할 일 목록 갱신"
+          }
+        }
+      }
+    },
+    "Version": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "버전"
+          }
+        }
+      }
+    },
+    "View": {
+      "comment": "Picker label for the chat/terminal switch (hidden, read by VoiceOver)",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "보기"
+          }
+        }
+      }
+    },
+    "Waiting for %@ · Click to reply": {
+      "comment": "%@ is a duration, e.g. 3 min",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 전부터 기다리는 중 · 클릭해서 답하기"
+          }
+        }
+      }
+    },
+    "Waiting for %@ · Click to view": {
+      "comment": "%@ is a duration, e.g. 3 min",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 전부터 기다리는 중 · 클릭해서 보기"
+          }
+        }
+      }
+    },
+    "Wake up": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "깨우기"
+          }
+        }
+      }
+    },
+    "Welcome to Clawd": {
+      "comment": "Welcome window title",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd에 오신 것을 환영해요"
+          }
+        }
+      }
+    },
+    "When Clawd is hidden": {
+      "comment": "When to send system notifications",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clawd를 숨겼을 때"
+          }
+        }
+      }
+    },
+    "Working": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "작업 중"
+          }
+        }
+      }
+    },
+    "Working · %@": {
+      "comment": "%@ is a tool name such as Bash",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "작업 중 · %@"
+          }
+        }
+      }
+    },
+    "You can turn it back on in Settings.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "설정에서 다시 켤 수 있어요."
+          }
+        }
+      }
+    },
+    "just now": {
+      "comment": "Less than a minute ago; used mid-sentence",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "방금"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

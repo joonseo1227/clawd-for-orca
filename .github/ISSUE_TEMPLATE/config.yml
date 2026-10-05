@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/joonseo1227/clawd-for-orca/security/advisories/new
+    about: Please report security issues privately.
+  - name: Orca issues
+    url: https://www.onorca.dev
+    about: Problems with Orca itself belong to the Orca project.

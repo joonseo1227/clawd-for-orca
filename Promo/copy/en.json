@@ -1,0 +1,70 @@
+{
+  "_comment": "On-screen English text, same flow, timing and tone as ko.json (plain, short, no exclamation marks).",
+  "lang": "en",
+  "cues": [
+    {
+      "id": "cap1",
+      "text": "While your agents work,",
+      "start": 0.8,
+      "end": 3.5,
+      "placement": "right"
+    },
+    {
+      "id": "cap2",
+      "text": "go ahead, scroll.",
+      "start": 3.8,
+      "end": 6.0,
+      "placement": "right"
+    },
+    {
+      "id": "cap3",
+      "text": "Clawd calls you when it matters.",
+      "start": 7.7,
+      "end": 12.4,
+      "placement": "left"
+    },
+    {
+      "id": "cap4",
+      "text": "Approve without opening Orca.",
+      "start": 13.9,
+      "end": 18.4,
+      "placement": "left"
+    },
+    {
+      "id": "cap_reply",
+      "text": "Answer questions in place.",
+      "start": 18.9,
+      "end": 23.3,
+      "placement": "left"
+    },
+    {
+      "id": "cap5",
+      "text": "See how far they've got.",
+      "start": 23.8,
+      "end": 26.3,
+      "placement": "right"
+    },
+    {
+      "id": "cap_term",
+      "text": "Even the terminal, right there.",
+      "start": 26.7,
+      "end": 30.4,
+      "placement": "left"
+    },
+    {
+      "id": "cap6",
+      "text": "It tells you when it's done.",
+      "start": 31.3,
+      "end": 33.4,
+      "placement": "right"
+    },
+    {
+      "id": "title",
+      "text": "Clawd for Orca",
+      "sub": "Check on your agents with Clawd.",
+      "start": 33.9,
+      "end": 35.5,
+      "placement": "title"
+    }
+  ]
+}

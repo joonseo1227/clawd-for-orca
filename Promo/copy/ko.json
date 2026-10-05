@@ -1,0 +1,70 @@
+{
+  "_comment": "On-screen Korean text (approved). Toss-style UX writing: plain 해요체, concrete, no exclamation marks. Times in seconds; placement: left | right | center | title.",
+  "lang": "ko",
+  "cues": [
+    {
+      "id": "cap1",
+      "text": "에이전트가 일하는 동안",
+      "start": 0.8,
+      "end": 3.5,
+      "placement": "right"
+    },
+    {
+      "id": "cap2",
+      "text": "마음 편히 딴짓하세요",
+      "start": 3.8,
+      "end": 6.0,
+      "placement": "right"
+    },
+    {
+      "id": "cap3",
+      "text": "확인할 게 생기면 Clawd가 불러요",
+      "start": 7.7,
+      "end": 12.4,
+      "placement": "left"
+    },
+    {
+      "id": "cap4",
+      "text": "Orca를 안 열어도 바로 승인해요",
+      "start": 13.9,
+      "end": 18.4,
+      "placement": "left"
+    },
+    {
+      "id": "cap_reply",
+      "text": "질문에는 바로 답하고",
+      "start": 18.9,
+      "end": 23.3,
+      "placement": "left"
+    },
+    {
+      "id": "cap5",
+      "text": "어디까지 했는지도 한눈에",
+      "start": 23.8,
+      "end": 26.3,
+      "placement": "right"
+    },
+    {
+      "id": "cap_term",
+      "text": "터미널도 그 자리에서",
+      "start": 26.7,
+      "end": 30.4,
+      "placement": "left"
+    },
+    {
+      "id": "cap6",
+      "text": "끝나면 끝났다고 알려 줘요",
+      "start": 31.3,
+      "end": 33.4,
+      "placement": "right"
+    },
+    {
+      "id": "title",
+      "text": "Clawd for Orca",
+      "sub": "에이전트, 이제 Clawd로 확인하세요",
+      "start": 33.9,
+      "end": 35.5,
+      "placement": "title"
+    }
+  ]
+}

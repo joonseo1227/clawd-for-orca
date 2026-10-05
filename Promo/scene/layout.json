@@ -1,0 +1,123 @@
+{
+  "_comment": "Which images the scene uses and where things sit inside them. Fractions are of the window inside each image (the transparent shadow margin and popover arrow are cropped automatically): u from the left, v from the top. Files are looked up in Promo/<shots_dir> first, then Promo/textures (drawn mock-ups). \"auto\" values are measured from each language's own capture when the scene is built.",
+  "shots_dir": "shots-light",
+  "key": {
+    "_comment": "How opaque each flat UI background stays as a veil over the glass: [main area, sidebar]. The rest of the background is keyed out and the content's anti-aliased edges are un-mixed from it.",
+    "panel": [
+      0.55,
+      0.5
+    ],
+    "card": [
+      0.62,
+      0.62
+    ],
+    "permission": [
+      0.55,
+      0.55
+    ]
+  },
+  "cards": {
+    "permission": "card-permission.png",
+    "done": "card-done.png"
+  },
+  "chat_timeline": {
+    "files": [
+      "chat-timeline-pet.png"
+    ],
+    "sidebar_u": 0.261,
+    "header_v": 0.08,
+    "composer_v": 0.916,
+    "reveal_steps_v": "auto",
+    "_reveal_steps_v": "auto: a stop under each row of content, so rows appear whole"
+  },
+  "chat_permission": {
+    "files": [
+      "chat-permission-pet.png"
+    ],
+    "sidebar_u": 0.261,
+    "header_v": 0.08,
+    "composer_v": 0.916,
+    "reveal_steps_v": [],
+    "permission_rect": [
+      0.2795,
+      0.6735,
+      0.9825,
+      0.8665
+    ],
+    "lift_rect": "auto",
+    "_permission_rect": "left in the panel when the prompt lifts out: the prompt box and its header",
+    "_lift_rect": "auto: the prompt box just inside its border, cut a little right of its longest line in this language"
+  },
+  "terminal": {
+    "files": [
+      "chat-terminal-pet.png"
+    ],
+    "sidebar_u": 0.261,
+    "header_v": 0.08,
+    "composer_v": 0.958,
+    "reveal_steps_v": "auto",
+    "tab_point": [
+      0.917,
+      0.045
+    ],
+    "hide_rect": [
+      0.27,
+      0.958,
+      1.0,
+      1.0
+    ],
+    "_hide_rect": "the approximate-terminal footer ('Connect to Orca…') is masked so it reads as the live terminal",
+    "typed": [
+      "chat-terminal-typed-pet.png"
+    ],
+    "_typed": "the same terminal with the command typed at the prompt; the typed glyphs, caret and field are measured from the difference"
+  },
+  "chips": {
+    "web-app": "chip-web-app.png",
+    "ios-widget": "chip-ios-widget.png",
+    "api-server": "chip-api-server.png",
+    "docs-site": "chip-docs-site.png"
+  },
+  "chat_question": {
+    "sidebar_u": 0.261,
+    "header_v": 0.08,
+    "composer_v": 0.916,
+    "reveal_steps_v": [],
+    "files": [
+      "chat-question-pet.png"
+    ],
+    "typed": [
+      "chat-reply-pet.png"
+    ],
+    "_typed": "the same view with the reply typed into the composer and the send button shown"
+  },
+  "chat_replied": {
+    "sidebar_u": 0.261,
+    "header_v": 0.08,
+    "composer_v": 0.916,
+    "reveal_steps_v": [],
+    "files": [
+      "chat-replied-pet.png",
+      "chat-question-pet.png"
+    ]
+  },
+  "terminal_after": {
+    "sidebar_u": 0.261,
+    "header_v": 0.08,
+    "composer_v": 0.958,
+    "files": [
+      "chat-terminal-after-pet.png",
+      "chat-terminal-pet.png"
+    ],
+    "hide_rect": [
+      0.27,
+      0.958,
+      1.0,
+      1.0
+    ],
+    "_hide_rect": "the approximate-terminal footer ('Connect to Orca…') is masked so it reads as the live terminal",
+    "reveal_steps_v": "auto",
+    "scroll_from": "terminal",
+    "_scroll_from": "scrolls up into place from that face's typed capture; the rows under the submitted prompt appear one by one"
+  }
+}

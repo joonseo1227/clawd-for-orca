@@ -1,0 +1,57 @@
+name: Release
+
+# Builds the Windows app and attaches it to an existing GitHub Release. It runs by hand
+# (Actions > Release > Run workflow). The macOS zip is uploaded by hand, because notarization
+# needs the maintainer's Developer ID certificate (see CONTRIBUTING.md, "Releasing").
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to attach the Windows build to, e.g. windows-v1.0.0"
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: Windows
+        shell: pwsh
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ inputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Check the tag matches Windows/VERSION
+        id: version
+        run: |
+          $version = (Get-Content VERSION -Raw).Trim()
+          if ("windows-v$version" -ne $env:TAG) { throw "Tag $env:TAG does not match Windows/VERSION ($version)" }
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Test
+        run: dotnet test Clawd.Core.Tests -c Release
+
+      - name: Publish (self-contained, win-x64)
+        run: dotnet publish Clawd/Clawd.csproj -c Release -r win-x64 -p:Platform=x64 -o publish/Clawd
+
+      - name: Installer (MSI)
+        run: dotnet build Installer -c Release
+
+      - name: Upload to the GitHub Release
+        run: gh release upload $env:TAG "Installer/bin/x64/Release/Clawd-${{ steps.version.outputs.version }}-Windows-x64.msi" --clobber

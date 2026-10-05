@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- Everything is local: no network, no inline script, no eval. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:">
+<title>Terminal</title>
+<link rel="stylesheet" href="vendor/xterm.css">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
+  /* The host's padding is TerminalMetrics.padding on the Mac (12 px). */
+  #terminal { position: absolute; inset: 12px; }
+  .xterm, .xterm .xterm-viewport, .xterm .xterm-screen { background-color: transparent !important; }
+  .xterm .xterm-viewport { scrollbar-width: thin; }
+</style>
+</head>
+<body>
+<div id="terminal"></div>
+<script src="vendor/xterm.js"></script>
+<script src="vendor/addon-fit.js"></script>
+<script src="vendor/addon-web-links.js"></script>
+<script src="terminal.js"></script>
+</body>
+</html>

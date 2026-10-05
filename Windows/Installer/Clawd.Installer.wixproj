@@ -1,0 +1,59 @@
+<Project Sdk="WixToolset.Sdk/5.0.2">
+  <!-- The per-user MSI, built from the published app folder (Windows only):
+         dotnet publish ..\Clawd -c Release -r win-x64 -p:Platform=x64 -o ..\publish\Clawd
+         dotnet build -c Release -->
+  <PropertyGroup>
+    <OutputName>Clawd-$(Version)-Windows-x64</OutputName>
+    <!-- Platform rather than only InstallerPlatform, so the MSI lands in bin\x64\Release. -->
+    <Platform>x64</Platform>
+    <PublishDir Condition="'$(PublishDir)' == ''">$(MSBuildThisFileDirectory)..\publish\Clawd\</PublishDir>
+    <!-- MSI versions are numeric only, so a pre-release such as 1.0.0-beta.1 installs as 1.0.0. -->
+    <MsiVersion>$(Version.Split('-')[0])</MsiVersion>
+    <DefineConstants>PublishDir=$(PublishDir);MsiVersion=$(MsiVersion)</DefineConstants>
+    <!-- MajorUpgrade AllowSameVersionUpgrades lets a rebuild of the same version replace the
+         installed one; ICE61 always warns about that. -->
+    <SuppressIces>ICE61</SuppressIces>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="WixToolset.Util.wixext" Version="5.0.2" />
+  </ItemGroup>
+
+  <!-- WiX copies each file's languages into the File table. Microsoft.ui.xaml.dll lists 86, more
+       than the Language column holds, and some WinUI .mui files use LCIDs newer than ICE03 knows
+       (sr-Latn-RS and others), so validation fails. The column only matters when an installed file
+       has the same version; mark these files language-neutral (0) before validating. -->
+  <UsingTask TaskName="NeutralizeFileLanguages" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Package ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="$(WixBinDir)WixToolset.Dtf.WindowsInstaller.dll" />
+      <Using Namespace="WixToolset.Dtf.WindowsInstaller" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        using (var db = new Database(Package, DatabaseOpenMode.Transact))
+        using (var view = db.OpenView("SELECT `File`, `FileName`, `Language` FROM `File`"))
+        {
+            view.Execute();
+            foreach (var record in view)
+            {
+                using (record)
+                {
+                    var language = record.GetString(3);
+                    if (language.Length == 0 || language == "0") continue;
+                    if (language.Contains(",") || record.GetString(2).EndsWith(".mui", StringComparison.OrdinalIgnoreCase))
+                    {
+                        record.SetString(3, "0");
+                        view.Modify(ViewModifyMode.Update, record);
+                    }
+                }
+            }
+            db.Commit();
+        }
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="NeutralizeFileLanguages" AfterTargets="CoreCompile" BeforeTargets="WindowsInstallerValidation"
+          Condition=" '$(_WixBuildExitCode)' == '0' ">
+    <NeutralizeFileLanguages Package="$(IntermediateOutputPath)%(CultureGroup.OutputFolder)$(TargetFileName)" />
+  </Target>
+</Project>

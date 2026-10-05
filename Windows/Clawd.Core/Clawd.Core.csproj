@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Everything that isn't UI: the Orca client, transcripts, attention logic, the pet's
+       simulation and drawing. Plain net10.0 so it builds and is tested on any OS. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Clawd.Core</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Clawd.Core.Tests" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- English, the default. Text built in Clawd.Core. Keep the keys in step with the other language (a test checks). Format strings take {0}, {1}… as the comment says; a translation may use any of them in any order. -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Duration_Minutes" xml:space="preserve">
+    <value>{0} min</value>
+    <comment>{0}: minutes</comment>
+  </data>
+  <data name="Duration_HoursMinutes" xml:space="preserve">
+    <value>{0} hr {1} min</value>
+    <comment>{0}: hours, {1}: minutes</comment>
+  </data>
+  <data name="Ago_JustNow" xml:space="preserve">
+    <value>just now</value>
+    <comment>Under a minute ago</comment>
+  </data>
+  <data name="Ago_Duration" xml:space="preserve">
+    <value>{0} ago</value>
+    <comment>{0}: a duration such as "3 min"</comment>
+  </data>
+  <data name="Sign_Permission" xml:space="preserve">
+    <value>Permission needed</value>
+    <comment>Card title: an agent waits for a permission answer</comment>
+  </data>
+  <data name="Sign_Reply" xml:space="preserve">
+    <value>Reply needed</value>
+    <comment>Card title: an agent asked a question</comment>
+  </data>
+  <data name="Sign_WaitingHint" xml:space="preserve">
+    <value>Waiting for {0} · Click to reply</value>
+    <comment>{0}: how long, at least a minute ("3 min")</comment>
+  </data>
+  <data name="Sign_MoreWaiting" xml:space="preserve">
+    <value>+{0} more · {1}</value>
+    <comment>{0}: how many other agents wait, {1}: the rest of the hint</comment>
+  </data>
+  <data name="Sign_JustStartedWaiting" xml:space="preserve">
+    <value>Just started waiting · Click to reply</value>
+    <comment>Card hint: the agent started waiting less than a minute ago</comment>
+  </data>
+  <data name="Sign_Done" xml:space="preserve">
+    <value>Task complete</value>
+    <comment>Card and notification title when an agent finishes</comment>
+  </data>
+  <data name="Sign_DoneHint" xml:space="preserve">
+    <value>Took {0} · Click to keep talking</value>
+    <comment>{0}: how long the task took</comment>
+  </data>
+  <data name="Sign_DoneHintNoTime" xml:space="preserve">
+    <value>Click to keep talking</value>
+  </data>
+  <data name="Sign_JustStartedWaitingView" xml:space="preserve">
+    <value>Just started waiting · Click to view</value>
+    <comment>Card hint for a session in Orca’s chat: the agent started waiting less than a minute ago</comment>
+  </data>
+  <data name="Sign_WaitingHintView" xml:space="preserve">
+    <value>Waiting for {0} · Click to view</value>
+    <comment>{0}: how long, at least a minute ("3 min")</comment>
+  </data>
+  <data name="Sign_DoneHintView" xml:space="preserve">
+    <value>Took {0} · Click to view</value>
+    <comment>{0}: how long the task took</comment>
+  </data>
+  <data name="Sign_DoneHintNoTimeView" xml:space="preserve">
+    <value>Click to view</value>
+  </data>
+  <data name="Sign_NoOrca" xml:space="preserve">
+    <value>Can’t find Orca</value>
+  </data>
+  <data name="Sign_Off" xml:space="preserve">
+    <value>Orca integration off</value>
+  </data>
+  <data name="Sign_FinishedLine" xml:space="preserve">
+    <value>{0}  finished {1}</value>
+    <comment>{0}: agent name, {1}: relative time</comment>
+  </data>
+  <data name="Sign_AllResting" xml:space="preserve">
+    <value>Everyone’s resting</value>
+  </data>
+  <data name="Sign_Working" xml:space="preserve">
+    <value>{0} working</value>
+    <comment>{0}: number of working agents</comment>
+  </data>
+  <data name="Sign_RecentlyFinished" xml:space="preserve">
+    <value>Recently finished</value>
+  </data>
+  <data name="Status_Waiting" xml:space="preserve">
+    <value>{0} waiting</value>
+    <comment>Notification-area tooltip after "Clawd · "; {0}: count</comment>
+  </data>
+  <data name="Status_Working" xml:space="preserve">
+    <value>{0} running</value>
+    <comment>{0}: count</comment>
+  </data>
+  <data name="Status_Finished" xml:space="preserve">
+    <value>{0} done</value>
+    <comment>{0}: count</comment>
+  </data>
+  <data name="Row_Permission" xml:space="preserve">
+    <value>Permission needed · {0}</value>
+    <comment>Sidebar row status; {0}: relative time</comment>
+  </data>
+  <data name="Row_Question" xml:space="preserve">
+    <value>Reply needed · {0}</value>
+    <comment>{0}: relative time</comment>
+  </data>
+  <data name="Row_Working" xml:space="preserve">
+    <value>Working</value>
+  </data>
+  <data name="Row_WorkingTool" xml:space="preserve">
+    <value>Working · {0}</value>
+    <comment>{0}: tool name such as Bash</comment>
+  </data>
+  <data name="Row_Finished" xml:space="preserve">
+    <value>Done · {0}</value>
+    <comment>{0}: relative time</comment>
+  </data>
+  <data name="Row_Resting" xml:space="preserve">
+    <value>Resting</value>
+  </data>
+  <data name="Step_Thinking" xml:space="preserve">
+    <value>Thinking…</value>
+    <comment>A thinking step that has no summary yet</comment>
+  </data>
+  <data name="Step_Thought" xml:space="preserve">
+    <value>Thinking</value>
+    <comment>A finished thinking step</comment>
+  </data>
+  <data name="Steps_Title_One" xml:space="preserve">
+    <value>{0} step</value>
+    <comment>Folded steps; {0}: count</comment>
+  </data>
+  <data name="Steps_Title_Other" xml:space="preserve">
+    <value>{0} steps</value>
+    <comment>{0}: count</comment>
+  </data>
+  <data name="Steps_MoreTools" xml:space="preserve">
+    <value>+{0} more</value>
+    <comment>{0}: tools not listed</comment>
+  </data>
+  <data name="Steps_Thoughts" xml:space="preserve">
+    <value>Thinking {0}</value>
+    <comment>{0}: thinking steps, listed like "Bash 2"</comment>
+  </data>
+  <data name="Tool_TodoWrite" xml:space="preserve">
+    <value>Update to-do list</value>
+    <comment>What a TodoWrite tool call does</comment>
+  </data>
+  <data name="Tool_Unnamed" xml:space="preserve">
+    <value>Tool</value>
+    <comment>A tool call without a name</comment>
+  </data>
+  <data name="Notifications_WhenHidden" xml:space="preserve">
+    <value>When Clawd is hidden</value>
+    <comment>Settings › Notifications option</comment>
+  </data>
+  <data name="Notifications_Always" xml:space="preserve">
+    <value>Always</value>
+  </data>
+  <data name="Notifications_Never" xml:space="preserve">
+    <value>Never</value>
+  </data>
+  <data name="Activity_Juggle" xml:space="preserve">
+    <value>Juggle</value>
+    <comment>Tricks submenu</comment>
+  </data>
+  <data name="Activity_Type" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Activity_Think" xml:space="preserve">
+    <value>Think</value>
+  </data>
+  <data name="Activity_Build" xml:space="preserve">
+    <value>Hammer</value>
+  </data>
+  <data name="Activity_Groove" xml:space="preserve">
+    <value>Listen to music</value>
+  </data>
+  <data name="Activity_Sweep" xml:space="preserve">
+    <value>Sweep</value>
+  </data>
+  <data name="Activity_Coffee" xml:space="preserve">
+    <value>Drink coffee</value>
+  </data>
+  <data name="Activity_Celebrate" xml:space="preserve">
+    <value>Celebrate</value>
+  </data>
+  <data name="Activity_LookAround" xml:space="preserve">
+    <value>Look around</value>
+  </data>
+  <data name="Activity_Stretch" xml:space="preserve">
+    <value>Stretch</value>
+  </data>
+  <data name="Activity_Sneeze" xml:space="preserve">
+    <value>Sneeze</value>
+  </data>
+  <data name="Permission_Allow" xml:space="preserve">
+    <value>Allow</value>
+    <comment>Claude Code's "Yes"</comment>
+  </data>
+  <data name="Permission_AllowAuto" xml:space="preserve">
+    <value>Allow, then auto mode</value>
+    <comment>Claude Code's "Yes, and switch to auto mode"</comment>
+  </data>
+  <data name="Permission_AllowAlways" xml:space="preserve">
+    <value>Always allow</value>
+    <comment>Claude Code's "Yes, and don't ask again…"</comment>
+  </data>
+  <data name="Permission_Deny" xml:space="preserve">
+    <value>Deny</value>
+    <comment>Claude Code's "No"</comment>
+  </data>
+  <data name="Bridge_SaveFailed" xml:space="preserve">
+    <value>Couldn’t save the pairing to Credential Manager</value>
+  </data>
+  <data name="Bridge_NoPairing" xml:space="preserve">
+    <value>Couldn’t read the pairing from Credential Manager</value>
+  </data>
+  <data name="Bridge_NoScript" xml:space="preserve">
+    <value>The live terminal’s bridge script is missing. Reinstall Clawd</value>
+  </data>
+  <data name="Bridge_NoOrca" xml:space="preserve">
+    <value>Can’t find the Orca app</value>
+  </data>
+  <data name="Bridge_ClosedWithoutScreen" xml:space="preserve">
+    <value>Orca closed the connection without sending the terminal screen</value>
+  </data>
+  <data name="Bridge_StartFailed" xml:space="preserve">
+    <value>Couldn’t start the live connection to Orca</value>
+  </data>
+  <data name="Bridge_StartFailedDetail" xml:space="preserve">
+    <value>Couldn’t start the live connection to Orca: {0}</value>
+    <comment>{0}: error detail</comment>
+  </data>
+  <data name="Bridge_UnknownError" xml:space="preserve">
+    <value>Unknown error</value>
+  </data>
+  <data name="Bridge_ConnectionError" xml:space="preserve">
+    <value>Connection error</value>
+  </data>
+  <data name="Update_DigestMismatch" xml:space="preserve">
+    <value>The download doesn’t match the release, so it wasn’t used</value>
+  </data>
+  <data name="Update_Incomplete" xml:space="preserve">
+    <value>The download was incomplete</value>
+  </data>
+  <data name="Update_TimedOut" xml:space="preserve">
+    <value>GitHub didn’t respond in time</value>
+  </data>
+</root>

@@ -1,0 +1,102 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The Windows app: WinUI 3 (Windows App SDK), unpackaged and self-contained, so it runs as a
+       plain folder or single Clawd.exe without installing the Windows App SDK runtime. The UI is
+       written in C# against the native WinUI controls (no .xaml files): the whole project then
+       compiles, and is type-checked in CI, on any OS. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.22621.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <RootNamespace>Clawd</RootNamespace>
+    <AssemblyName>Clawd</AssemblyName>
+    <UseWinUI>true</UseWinUI>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <SelfContained>true</SelfContained>
+    <Platforms>x64;ARM64</Platforms>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-x64</RuntimeIdentifier>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\Clawd.ico</ApplicationIcon>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Program.cs owns Main: it checks for a running copy before starting WinUI. -->
+    <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <AssemblyTitle>Clawd for Orca</AssemblyTitle>
+  </PropertyGroup>
+
+  <!-- Off Windows (CI type-check, development on a Mac) the C# compiles normally, but the
+       Windows-only tools that run after it (makepri.exe for resources.pri, mt.exe for the
+       self-contained manifest) can't. Skip just those; the output is not runnable there anyway. -->
+  <PropertyGroup Condition="!$([MSBuild]::IsOSPlatform('Windows'))">
+    <AppxGeneratePriEnabled>false</AppxGeneratePriEnabled>
+    <WindowsAppSDKSelfContained>false</WindowsAppSDKSelfContained>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <WindowsAppSdkVersion>2.5.1</WindowsAppSdkVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="$(WindowsAppSdkVersion)" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Clawd.Core\Clawd.Core.csproj" />
+  </ItemGroup>
+
+  <!-- UI text: Strings\<language>\Resources.resw, compiled into resources.pri (en-US is the
+       fallback) and read with MRT Core; see L.cs. The same files are embedded so the app still has
+       its text if resources.pri is missing. Clawd.Core's own text ships as the ko satellite
+       assembly (ko\Clawd.Core.resources.dll). -->
+  <PropertyGroup>
+    <DefaultLanguage>en-US</DefaultLanguage>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings\en-US\Resources.resw" LogicalName="Clawd.Strings.en-US.resw" />
+    <EmbeddedResource Include="Strings\ko-KR\Resources.resw" LogicalName="Clawd.Strings.ko-KR.resw" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Clawd.ico" CopyToOutputDirectory="PreserveNewest" />
+    <!-- xterm.js and the page that hosts it, loaded by WebView2 from disk: no CDN, no network. -->
+    <Content Include="Assets\Terminal\**" CopyToOutputDirectory="PreserveNewest" />
+    <!-- The same bridge script the Mac app runs under Orca's Node. -->
+    <Content Include="..\..\Bridge\clawd-bridge.js" Link="Bridge\clawd-bridge.js" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- Windows App SDK 2.5.1 leaves Microsoft.WindowsAppRuntime.Insights.Resource.dll out of
+       self-contained builds, yet WindowsAppRuntime_IsSelfContained() needs it, so
+       AppNotificationManager.Register() fails with 0x8007007E and toasts can't be clicked or
+       answered (microsoft/WindowsAppSDK#6774). The same DLL ships in the runtime MSIX inside the
+       restored NuGet package: copy it next to Clawd.exe. Harmless once the SDK includes it. -->
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+    <InsightsMsixArch Condition="'$(Platform)' == 'ARM64'">arm64</InsightsMsixArch>
+    <InsightsMsixArch Condition="'$(InsightsMsixArch)' == ''">x64</InsightsMsixArch>
+    <InsightsMsix>$(NuGetPackageRoot)microsoft.windowsappsdk.runtime\$(WindowsAppSdkVersion)\tools\MSIX\win10-$(InsightsMsixArch)\Microsoft.WindowsAppRuntime.$(WindowsAppSdkVersion.Split('.')[0]).msix</InsightsMsix>
+  </PropertyGroup>
+  <!-- MRT Core's PRI generation writes Clawd.pri straight into the build output without making
+       it an item, so publish left it out and the published app fell back to the embedded strings
+       ("strings: resources.pri unavailable"). Publish it with the rest. -->
+  <Target Name="PublishProjectPri" AfterTargets="ComputeResolvedFilesToPublishList" Condition="'$(ProjectPriFileName)' != ''">
+    <ItemGroup>
+      <ResolvedFileToPublish Include="$(TargetDir)$(ProjectPriFileName)" Condition="Exists('$(TargetDir)$(ProjectPriFileName)')"
+                             RelativePath="$(ProjectPriFileName)" CopyToPublishDirectory="PreserveNewest" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="AddWindowsAppRuntimeInsightsResource" BeforeTargets="AssignTargetPaths" Condition="'$(InsightsMsix)' != ''">
+    <!-- Set here: IntermediateOutputPath is only defined after the project body is read. -->
+    <PropertyGroup>
+      <InsightsDir>$(IntermediateOutputPath)insights\</InsightsDir>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(InsightsMsix)')" Text="Windows App SDK runtime MSIX not found at $(InsightsMsix); update the path for the referenced SDK version." />
+    <Unzip SourceFiles="$(InsightsMsix)" DestinationFolder="$(InsightsDir)" Include="Microsoft.WindowsAppRuntime.Insights.Resource.dll" SkipUnchangedFiles="true" />
+    <ItemGroup>
+      <None Include="$(InsightsDir)Microsoft.WindowsAppRuntime.Insights.Resource.dll" Link="Microsoft.WindowsAppRuntime.Insights.Resource.dll"
+            CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    </ItemGroup>
+  </Target>
+</Project>

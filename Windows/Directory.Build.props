@@ -1,0 +1,15 @@
+<Project>
+  <!-- Shared by every project in Windows/. -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Version>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)VERSION').Trim())</Version>
+    <Company>joonseo1227</Company>
+    <Product>Clawd for Orca</Product>
+    <Copyright>© 2026 joonseo1227</Copyright>
+    <!-- Reproducible across machines; no telemetry-bearing build tasks. -->
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+</Project>

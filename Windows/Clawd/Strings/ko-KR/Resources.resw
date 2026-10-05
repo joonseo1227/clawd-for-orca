@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Korean. Text built in the WinUI app. Keep the keys in step with the other language (a test checks). Format strings take {0}, {1}… as the comment says; a translation may use any of them in any order. -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Say_ShortcutTaken" xml:space="preserve">
+    <value>다른 앱이 {0}를 쓰고 있어요. 설정에서 바꿀 수 있어요</value>
+  </data>
+  <data name="Say_OrcaOff" xml:space="preserve">
+    <value>Orca 연동을 껐어요</value>
+  </data>
+  <data name="Say_OrcaOn" xml:space="preserve">
+    <value>Orca 연동을 켰어요</value>
+  </data>
+  <data name="Say_LoginFailed" xml:space="preserve">
+    <value>시작 프로그램을 바꾸지 못했어요: {0}</value>
+  </data>
+  <data name="Say_LoginOn" xml:space="preserve">
+    <value>로그인하면 Clawd가 같이 켜져요</value>
+  </data>
+  <data name="Say_LoginOff" xml:space="preserve">
+    <value>로그인 시 실행을 껐어요</value>
+  </data>
+  <data name="Say_PairFailed" xml:space="preserve">
+    <value>Orca와 연결하지 못했어요</value>
+  </data>
+  <data name="Say_Paired" xml:space="preserve">
+    <value>Orca와 연결했어요</value>
+  </data>
+  <data name="Say_Unpaired" xml:space="preserve">
+    <value>Orca 실시간 연결을 해제했어요</value>
+  </data>
+  <data name="Live_Connecting" xml:space="preserve">
+    <value>Orca에 연결하는 중…</value>
+  </data>
+  <data name="Live_StartFailed" xml:space="preserve">
+    <value>Orca 실시간 연결을 시작하지 못했어요</value>
+  </data>
+  <data name="Live_Expired" xml:space="preserve">
+    <value>Orca 연결이 만료됐어요. 설정에서 다시 연결해 주세요</value>
+  </data>
+  <data name="Live_Error" xml:space="preserve">
+    <value>실시간 연결 오류: {0}</value>
+  </data>
+  <data name="Live_Reconnecting" xml:space="preserve">
+    <value>Orca에 다시 연결하는 중…</value>
+  </data>
+  <data name="Live_Closed" xml:space="preserve">
+    <value>Orca가 실시간 연결을 닫았어요</value>
+  </data>
+  <data name="Live_ViewFailed" xml:space="preserve">
+    <value>실시간 터미널을 표시할 수 없어요: {0}</value>
+  </data>
+  <data name="Toast_Permission" xml:space="preserve">
+    <value>권한 필요</value>
+  </data>
+  <data name="Toast_Reply" xml:space="preserve">
+    <value>답장 필요</value>
+  </data>
+  <data name="Toast_Done" xml:space="preserve">
+    <value>작업 완료</value>
+  </data>
+  <data name="Toast_SendFailed" xml:space="preserve">
+    <value>보내지 못했어요</value>
+  </data>
+  <data name="Toast_SendFailedBody" xml:space="preserve">
+    <value>Orca에서 열어서 확인해 주세요</value>
+  </data>
+  <data name="Toast_ReplyPlaceholder" xml:space="preserve">
+    <value>메시지</value>
+  </data>
+  <data name="Toast_ReplyTitle" xml:space="preserve">
+    <value>답장</value>
+  </data>
+  <data name="Toast_Send" xml:space="preserve">
+    <value>보내기</value>
+  </data>
+  <data name="Toast_OpenInOrca" xml:space="preserve">
+    <value>Orca에서 열기</value>
+  </data>
+  <data name="Notice_Sent" xml:space="preserve">
+    <value>{0}에게 보냈어요</value>
+  </data>
+  <data name="Notice_SendFailed" xml:space="preserve">
+    <value>보내지 못했어요. Orca에서 열어서 확인해 주세요</value>
+  </data>
+  <data name="Notice_OptionNumber" xml:space="preserve">
+    <value>{0}번</value>
+  </data>
+  <data name="Notice_AlreadyHandled" xml:space="preserve">
+    <value>이미 처리된 요청이라 아무것도 보내지 않았어요</value>
+  </data>
+  <data name="Notice_AnswerFailed" xml:space="preserve">
+    <value>응답을 보내지 못했어요. Orca에서 열어서 확인해 주세요</value>
+  </data>
+  <data name="Menu_Show" xml:space="preserve">
+    <value>Clawd 보이기</value>
+  </data>
+  <data name="Menu_Hide" xml:space="preserve">
+    <value>Clawd 숨기기</value>
+  </data>
+  <data name="Menu_Snack" xml:space="preserve">
+    <value>간식 주기</value>
+  </data>
+  <data name="Menu_Settings" xml:space="preserve">
+    <value>설정…</value>
+  </data>
+  <data name="Menu_Quit" xml:space="preserve">
+    <value>Clawd 종료</value>
+  </data>
+  <data name="Menu_Tricks" xml:space="preserve">
+    <value>장기자랑</value>
+  </data>
+  <data name="Menu_Follow" xml:space="preserve">
+    <value>마우스 따라오기</value>
+  </data>
+  <data name="Menu_StopFollowing" xml:space="preserve">
+    <value>그만 따라오기</value>
+  </data>
+  <data name="Menu_Wake" xml:space="preserve">
+    <value>깨우기</value>
+  </data>
+  <data name="Menu_Sleep" xml:space="preserve">
+    <value>재우기</value>
+  </data>
+  <data name="Menu_OrcaOff" xml:space="preserve">
+    <value>Orca 연동 꺼짐</value>
+  </data>
+  <data name="Menu_OpenInOrca" xml:space="preserve">
+    <value>Orca에서 열기</value>
+  </data>
+  <data name="Menu_ShowInClawd" xml:space="preserve">
+    <value>Clawd에서 보기</value>
+  </data>
+  <data name="Menu_ReplyWithClawd" xml:space="preserve">
+    <value>Clawd로 답하기</value>
+  </data>
+  <data name="Menu_TalkWithClawd" xml:space="preserve">
+    <value>Clawd로 말 걸기</value>
+  </data>
+  <data name="Menu_AllResting" xml:space="preserve">
+    <value>에이전트가 다 쉬고 있어요</value>
+  </data>
+  <data name="Menu_NeedsYou" xml:space="preserve">
+    <value>확인 필요</value>
+  </data>
+  <data name="Menu_Working" xml:space="preserve">
+    <value>작업 중</value>
+  </data>
+  <data name="Menu_RecentlyFinished" xml:space="preserve">
+    <value>최근 완료</value>
+  </data>
+  <data name="Menu_WaitingRow" xml:space="preserve">
+    <value>{0} · {1} 전부터</value>
+  </data>
+  <data name="Menu_WaitingRowJustNow" xml:space="preserve">
+    <value>{0} · 방금부터</value>
+  </data>
+  <data name="Menu_TalkToClawd" xml:space="preserve">
+    <value>Clawd에게 말 걸기</value>
+  </data>
+  <data name="Chat_DropTerminal" xml:space="preserve">
+    <value>놓으면 터미널에 경로를 붙여 넣어요</value>
+  </data>
+  <data name="Chat_DropMessage" xml:space="preserve">
+    <value>놓으면 메시지에 경로를 넣어요</value>
+  </data>
+  <data name="Chat_GroupNeedsYou" xml:space="preserve">
+    <value>확인 필요</value>
+  </data>
+  <data name="Chat_GroupWorking" xml:space="preserve">
+    <value>작업 중</value>
+  </data>
+  <data name="Chat_GroupFinished" xml:space="preserve">
+    <value>완료</value>
+  </data>
+  <data name="Chat_GroupResting" xml:space="preserve">
+    <value>쉬는 중 {0}</value>
+  </data>
+  <data name="Chat_MarkPermission" xml:space="preserve">
+    <value>권한 필요</value>
+  </data>
+  <data name="Chat_MarkQuestion" xml:space="preserve">
+    <value>답장 필요</value>
+  </data>
+  <data name="Chat_MarkWorking" xml:space="preserve">
+    <value>작업 중</value>
+  </data>
+  <data name="Chat_MarkFinished" xml:space="preserve">
+    <value>완료</value>
+  </data>
+  <data name="Chat_NoAgents" xml:space="preserve">
+    <value>실행 중인 에이전트가 없어요</value>
+  </data>
+  <data name="Chat_NoAgentsBody" xml:space="preserve">
+    <value>Orca에서 Claude나 Codex를 실행하면 여기에 나타나요.</value>
+  </data>
+  <data name="Chat_TabChat" xml:space="preserve">
+    <value>대화</value>
+  </data>
+  <data name="Chat_TabTerminal" xml:space="preserve">
+    <value>터미널</value>
+  </data>
+  <data name="Chat_TabTip" xml:space="preserve">
+    <value>대화 / 터미널 전환 (Ctrl+T)</value>
+  </data>
+  <data name="Chat_ViewPicker" xml:space="preserve">
+    <value>보기</value>
+  </data>
+  <data name="Chat_OpenInOrca" xml:space="preserve">
+    <value>Orca에서 열기</value>
+  </data>
+  <data name="Chat_SendTip" xml:space="preserve">
+    <value>보내기 (Enter)</value>
+  </data>
+  <data name="Chat_Send" xml:space="preserve">
+    <value>보내기</value>
+  </data>
+  <data name="Chat_PlaceholderReply" xml:space="preserve">
+    <value>답장</value>
+  </data>
+  <data name="Chat_PlaceholderMessage" xml:space="preserve">
+    <value>메시지</value>
+  </data>
+  <data name="Chat_PlaceholderAnswer" xml:space="preserve">
+    <value>위 버튼이나 Ctrl+1–{0} 키로 답해 주세요</value>
+  </data>
+  <data name="Chat_PlaceholderAnswerInOrca" xml:space="preserve">
+    <value>Orca에서 권한 요청에 답해 주세요</value>
+  </data>
+  <data name="Chat_OrcaNotRunning" xml:space="preserve">
+    <value>Orca가 꺼져 있어요</value>
+  </data>
+  <data name="Chat_OrcaNotRunningBody" xml:space="preserve">
+    <value>Orca를 열면 에이전트가 여기에 나타나요.</value>
+  </data>
+  <data name="Chat_OpenOrca" xml:space="preserve">
+    <value>Orca 열기</value>
+  </data>
+  <data name="Chat_OrcaOff" xml:space="preserve">
+    <value>Orca 연동이 꺼져 있어요</value>
+  </data>
+  <data name="Chat_OrcaOffBody" xml:space="preserve">
+    <value>설정에서 다시 켤 수 있어요.</value>
+  </data>
+  <data name="Chat_OpenSettings" xml:space="preserve">
+    <value>설정 열기</value>
+  </data>
+  <data name="Chat_NoOrca" xml:space="preserve">
+    <value>Orca를 찾을 수 없어요</value>
+  </data>
+  <data name="Chat_NoOrcaBody" xml:space="preserve">
+    <value>Clawd는 Orca에서 실행 중인 코딩 에이전트를 보여줘요. Orca를 설치하면 바로 연결돼요.</value>
+  </data>
+  <data name="Chat_DownloadOrca" xml:space="preserve">
+    <value>Orca 내려받기</value>
+  </data>
+  <data name="Terminal_Unreadable" xml:space="preserve">
+    <value>터미널 화면을 읽을 수 없어요. 터미널이 닫혔다면 Orca에서 확인해 주세요.</value>
+  </data>
+  <data name="Terminal_Typing" xml:space="preserve">
+    <value>입력 중  {0}</value>
+  </data>
+  <data name="Timeline_Working" xml:space="preserve">
+    <value>작업 중</value>
+  </data>
+  <data name="Timeline_NoOutput" xml:space="preserve">
+    <value>출력 없음</value>
+  </data>
+  <data name="Timeline_Running" xml:space="preserve">
+    <value>{0} 실행 중</value>
+  </data>
+  <data name="Timeline_PermissionRequest" xml:space="preserve">
+    <value>권한 요청</value>
+  </data>
+  <data name="Timeline_AnswerInOrca" xml:space="preserve">
+    <value>Orca에서 답하기</value>
+  </data>
+  <data name="Sign_Close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="Settings_NotInstalled" xml:space="preserve">
+    <value>설치 안 됨</value>
+  </data>
+  <data name="Settings_Download" xml:space="preserve">
+    <value>내려받기</value>
+  </data>
+  <data name="Settings_NotRunning" xml:space="preserve">
+    <value>꺼져 있음</value>
+  </data>
+  <data name="Settings_Open" xml:space="preserve">
+    <value>열기</value>
+  </data>
+  <data name="Settings_Running_One" xml:space="preserve">
+    <value>실행 중 · 에이전트 {0}개</value>
+  </data>
+  <data name="Settings_Running_Other" xml:space="preserve">
+    <value>실행 중 · 에이전트 {0}개</value>
+  </data>
+  <data name="Settings_Connected" xml:space="preserve">
+    <value>연결됨</value>
+  </data>
+  <data name="Settings_Disconnect" xml:space="preserve">
+    <value>연결 해제</value>
+  </data>
+  <data name="Settings_Connect" xml:space="preserve">
+    <value>연결…</value>
+  </data>
+  <data name="Pairing_Invalid" xml:space="preserve">
+    <value>페어링 코드를 읽을 수 없어요. Orca에서 복사한 코드를 그대로 붙여 넣어 주세요.</value>
+  </data>
+  <data name="Pairing_Paste" xml:space="preserve">
+    <value>붙여넣기</value>
+  </data>
+  <data name="Pairing_Why" xml:space="preserve">
+    <value>터미널을 색과 커서까지 그대로 보려면 Orca의 실시간 연결이 필요해요.</value>
+  </data>
+  <data name="Pairing_Step1" xml:space="preserve">
+    <value>1. Orca 왼쪽 사이드바에서 **Orca 모바일**을 열어요.</value>
+  </data>
+  <data name="Pairing_Step2" xml:space="preserve">
+    <value>2. QR 코드를 생성하고 **페어링 코드 복사**를 눌러요.</value>
+  </data>
+  <data name="Pairing_Step3" xml:space="preserve">
+    <value>3. 아래에 붙여 넣어요.</value>
+  </data>
+  <data name="Pairing_Storage" xml:space="preserve">
+    <value>코드는 이 PC의 자격 증명 관리자에만 저장돼요.</value>
+  </data>
+  <data name="Pairing_Title" xml:space="preserve">
+    <value>Orca와 실시간 연결</value>
+  </data>
+  <data name="Pairing_Connect" xml:space="preserve">
+    <value>연결</value>
+  </data>
+  <data name="Pairing_Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Shortcut_Taken" xml:space="preserve">
+    <value>다른 앱이 이미 쓰고 있는 단축키예요. 다른 조합을 골라 주세요.</value>
+  </data>
+  <data name="Shortcut_Reset" xml:space="preserve">
+    <value>기본값({0})으로 되돌리기</value>
+  </data>
+  <data name="Shortcut_Recording" xml:space="preserve">
+    <value>단축키를 누르세요</value>
+  </data>
+  <data name="Shortcut_RecordingTip" xml:space="preserve">
+    <value>Esc를 누르면 취소돼요</value>
+  </data>
+  <data name="Shortcut_ChangeTip" xml:space="preserve">
+    <value>클릭해서 바꾸기</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Clawd 설정</value>
+  </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="Settings_StartAtLogin" xml:space="preserve">
+    <value>로그인 시 Clawd 실행</value>
+  </data>
+  <data name="Settings_ShowClawd" xml:space="preserve">
+    <value>화면에 Clawd 보이기</value>
+  </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>시스템 알림</value>
+  </data>
+  <data name="Settings_Sound" xml:space="preserve">
+    <value>알림 소리</value>
+  </data>
+  <data name="Settings_OrcaIntegration" xml:space="preserve">
+    <value>Orca 에이전트 연동</value>
+  </data>
+  <data name="Settings_Status" xml:space="preserve">
+    <value>상태</value>
+  </data>
+  <data name="Settings_LiveSubtitle" xml:space="preserve">
+    <value>Orca 모바일의 페어링 코드로 연결해요</value>
+  </data>
+  <data name="Settings_LiveTerminal" xml:space="preserve">
+    <value>실시간 터미널</value>
+  </data>
+  <data name="Settings_Shortcuts" xml:space="preserve">
+    <value>단축키</value>
+  </data>
+  <data name="Settings_TalkToClawd" xml:space="preserve">
+    <value>Clawd에게 말 걸기</value>
+  </data>
+  <data name="Settings_SwitchView" xml:space="preserve">
+    <value>대화 / 터미널 전환</value>
+  </data>
+  <data name="Settings_CloseChat" xml:space="preserve">
+    <value>대화 닫기</value>
+  </data>
+  <data name="Settings_About" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="Settings_DevBuild" xml:space="preserve">
+    <value>개발 빌드</value>
+  </data>
+  <data name="Settings_Version" xml:space="preserve">
+    <value>버전</value>
+  </data>
+  <data name="Settings_Author" xml:space="preserve">
+    <value>만든 사람</value>
+  </data>
+  <data name="Settings_Disclaimer" xml:space="preserve">
+    <value>Anthropic, Stably AI와 관계없는 비공식 앱이에요.</value>
+  </data>
+  <data name="Welcome_WindowTitle" xml:space="preserve">
+    <value>Clawd에 오신 것을 환영해요</value>
+  </data>
+  <data name="Welcome_Title" xml:space="preserve">
+    <value>Clawd를 만나 보세요</value>
+  </data>
+  <data name="Welcome_Body" xml:space="preserve">
+    <value>Orca에서 일하는 코딩 에이전트를 지켜보다가 답이 필요하거나 일이 끝나면 알려 줘요. 클릭하면 바로 대화할 수 있어요.</value>
+  </data>
+  <data name="Welcome_Start" xml:space="preserve">
+    <value>시작하기</value>
+  </data>
+  <data name="Welcome_Shortcut" xml:space="preserve">
+    <value>어디서든 Clawd 부르기</value>
+  </data>
+  <data name="Welcome_StartAtLogin" xml:space="preserve">
+    <value>로그인 시 실행</value>
+  </data>
+  <data name="Welcome_LiveTerminal" xml:space="preserve">
+    <value>실시간 터미널</value>
+  </data>
+  <data name="Welcome_LiveTerminalBody" xml:space="preserve">
+    <value>선택 사항 · 색과 커서까지 그대로 보여요</value>
+  </data>
+  <data name="Settings_Updates" xml:space="preserve">
+    <value>업데이트</value>
+  </data>
+  <data name="Settings_AutoUpdate" xml:space="preserve">
+    <value>업데이트 자동 확인</value>
+  </data>
+  <data name="Settings_AutoUpdateSubtitle" xml:space="preserve">
+    <value>하루에 한 번 GitHub에서 확인하고, 새 버전은 백그라운드에서 내려받아요</value>
+  </data>
+  <data name="Update_Idle" xml:space="preserve">
+    <value>업데이트 확인</value>
+  </data>
+  <data name="Update_LastChecked" xml:space="preserve">
+    <value>마지막 확인: {0}</value>
+  </data>
+  <data name="Update_CheckNow" xml:space="preserve">
+    <value>지금 확인</value>
+  </data>
+  <data name="Update_Checking" xml:space="preserve">
+    <value>업데이트 확인 중…</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>최신 버전이에요</value>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>Clawd {0} 내려받는 중…</value>
+  </data>
+  <data name="Update_Ready" xml:space="preserve">
+    <value>Clawd {0} 설치 준비가 끝났어요</value>
+  </data>
+  <data name="Update_ReadyBody" xml:space="preserve">
+    <value>업데이트하는 동안 Clawd가 몇 초간 닫혀요</value>
+  </data>
+  <data name="Update_Restart" xml:space="preserve">
+    <value>지금 업데이트</value>
+  </data>
+  <data name="Update_WhatsNew" xml:space="preserve">
+    <value>변경 사항</value>
+  </data>
+  <data name="Update_Installing" xml:space="preserve">
+    <value>업데이트 설치 중…</value>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>업데이트를 확인하지 못했어요</value>
+  </data>
+  <data name="Update_DownloadFailed" xml:space="preserve">
+    <value>업데이트를 내려받지 못했어요</value>
+  </data>
+  <data name="Update_TryAgain" xml:space="preserve">
+    <value>다시 시도</value>
+  </data>
+  <data name="Update_Cancelled" xml:space="preserve">
+    <value>업데이트를 취소했어요</value>
+  </data>
+  <data name="Update_Busy" xml:space="preserve">
+    <value>다른 설치가 진행 중이에요. 잠시 후 다시 시도해 주세요</value>
+  </data>
+  <data name="Update_InstallFailed" xml:space="preserve">
+    <value>업데이트를 설치하지 못했어요 ({0})</value>
+  </data>
+  <data name="Update_InstalledOnly" xml:space="preserve">
+    <value>설치한 앱에서만 업데이트할 수 있어요</value>
+  </data>
+  <data name="Toast_UpdateAvailable" xml:space="preserve">
+    <value>Clawd {0} 버전이 나왔어요</value>
+  </data>
+  <data name="Toast_UpdateBody" xml:space="preserve">
+    <value>내려받아 두었어요. Clawd를 다시 시작하면 업데이트돼요.</value>
+  </data>
+  <data name="Menu_RestartToUpdate" xml:space="preserve">
+    <value>Clawd {0} 설치하고 다시 시작</value>
+  </data>
+</root>
