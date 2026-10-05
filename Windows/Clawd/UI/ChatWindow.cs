@@ -126,8 +126,7 @@ internal sealed class ChatWindow
         _root.AllowDrop = true;
         _root.DragOver += (_, e) =>
         {
-            // Nothing to drop into for a session in Orca's chat.
-            if (!e.DataView.Contains(StandardDataFormats.StorageItems) || Model.Current?.Agent.HasTerminal != true) return;
+            if (!e.DataView.Contains(StandardDataFormats.StorageItems) || Model.Current?.Agent.CanMessage != true) return;
             e.AcceptedOperation = DataPackageOperation.Copy;
             e.DragUIOverride.Caption = L.Get(Model.ShowsTerminal ? "Chat_DropTerminal" : "Chat_DropMessage");
         };
@@ -158,6 +157,11 @@ internal sealed class ChatWindow
             if (p.Options.Any(o => o.Number == n) && !Model.Busy) _app.ChatAnswer(n, row.Agent);
             e.Handled = true;
         }
+        else if (ctrl && e.Key is >= VirtualKey.Number1 and <= VirtualKey.Number9 && _timeline?.QuestionCard is { Question.AnswersOnClick: true } card && !Model.ShowsTerminal)
+        {
+            card.Pick(e.Key - VirtualKey.Number1);
+            e.Handled = true;
+        }
         // Esc closes the chat; in the terminal view it belongs to the terminal.
         else if (e.Key == VirtualKey.Escape && !Model.ShowsTerminal) { Close(); e.Handled = true; }
     }
@@ -177,11 +181,11 @@ internal sealed class ChatWindow
             case nameof(ChatModel.Connection) or nameof(ChatModel.Mode) or nameof(ChatModel.Live):
                 RebuildRight();
                 break;
-            case nameof(ChatModel.Timeline) or nameof(ChatModel.TimelineReady) or nameof(ChatModel.Prompt) or nameof(ChatModel.Busy):
+            case nameof(ChatModel.Timeline) or nameof(ChatModel.TimelineReady) or nameof(ChatModel.Prompt) or nameof(ChatModel.Question) or nameof(ChatModel.Busy):
                 _timeline?.Update(Model, _app);
                 UpdateComposer();
-                // A permission dialog read off the screen: its answers take the focus the composer can't.
-                if (e.PropertyName == nameof(ChatModel.Prompt) && _composer is { IsEnabled: false }) FocusComposer();
+                // A permission dialog or questions read: their answers take the focus the composer can't.
+                if (e.PropertyName is nameof(ChatModel.Prompt) or nameof(ChatModel.Question) && _composer is { IsEnabled: false }) FocusComposer();
                 break;
             case nameof(ChatModel.Notice):
                 UpdateNotice();
@@ -270,7 +274,7 @@ internal sealed class ChatWindow
                 if (!e.DataView.Contains(StandardDataFormats.StorageItems)) return;
                 e.Handled = true;
                 // A session in Orca's chat takes nothing from Clawd; the window's handler would accept.
-                if (!row.Agent.HasTerminal) { e.AcceptedOperation = DataPackageOperation.None; return; }
+                if (!row.Agent.CanMessage) { e.AcceptedOperation = DataPackageOperation.None; return; }
                 e.AcceptedOperation = DataPackageOperation.Copy;
                 // The row's own caption; the window's describes the agent on the right.
                 e.DragUIOverride.Caption = L.Get(Model.ShowsTerminal && Model.Current?.Id == row.Id ? "Chat_DropTerminal" : "Chat_DropMessage");
@@ -516,15 +520,17 @@ internal sealed class ChatWindow
     private void UpdateComposer()
     {
         if (_composer is null || _send is null || Model.Current is not { } row) return;
-        // A permission dialog takes only its own answers: typed text would land in it. A session
-        // without a terminal takes nothing from Clawd.
-        var canType = row.Kind != RowKind.Permission && row.Agent.HasTerminal;
+        // A permission dialog or Claude's questions take only their own answers: typed text would
+        // land in the dialog.
+        var choices = TimelineView.TakesChoices(row, Model);
+        var canType = row.Kind != RowKind.Permission && row.Agent.CanMessage && !choices;
         // A permission answered: typing goes back to the composer, which the dialog's answers had
         // the focus instead of.
         var reopened = canType && !_composer.IsEnabled;
         _composer.IsEnabled = canType;
         if (reopened && IsOpen) FocusComposer();
         _composer.PlaceholderText = canType ? L.Get(row.Kind == RowKind.Question ? "Chat_PlaceholderReply" : "Chat_PlaceholderMessage")
+            : choices ? L.Get(Model.Question is null ? "Chat_PlaceholderQuestionsInOrca" : "Chat_PlaceholderChoose")
             : row.Kind != RowKind.Permission ? L.Get("Timeline_AnswerInOrca")
             : Model.Prompt is { } p ? L.Format("Chat_PlaceholderAnswer", p.Options.Count) : L.Get("Chat_PlaceholderAnswerInOrca");
         // Like Messages: no greyed-out button on an empty field; it appears once there is something to send.
@@ -558,7 +564,7 @@ internal sealed class ChatWindow
 
     private void Submit()
     {
-        if (Model.Current is not { } row || row.Kind == RowKind.Permission || !row.Agent.HasTerminal || Model.Busy) return;
+        if (Model.Current is not { } row || row.Kind == RowKind.Permission || !row.Agent.CanMessage || TimelineView.TakesChoices(row, Model) || Model.Busy) return;
         var text = Model.Draft.Trim();
         if (text.Length == 0) return;
         _app.ChatSend(text, row.Agent);
@@ -623,7 +629,7 @@ internal sealed class ChatWindow
     private void Drop(List<string> paths, ChatRow? row)
     {
         var text = FileDrop.Text(paths);
-        if (text.Length == 0 || row is null || !row.Agent.HasTerminal) return;
+        if (text.Length == 0 || row is null || !row.Agent.CanMessage) return;
         if (Model.ShowsTerminal && Model.Current?.Id == row.Id)
         {
             _app.SendKeys(FileDrop.Paste(text), row.Agent);

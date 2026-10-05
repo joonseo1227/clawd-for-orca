@@ -237,6 +237,8 @@ nonisolated final class TranscriptReader {
     private var seen: Set<String> = []           // entry uuids already in this turn
     private var sequence = 0           // entries read since the last reset, for positional ids
     private var last: [TimelineItem] = []
+    /// Claude's AskUserQuestion still waiting for an answer, if any.
+    private(set) var question: AgentQuestion?
 
     init(url: URL) { self.url = url }
 
@@ -279,6 +281,7 @@ nonisolated final class TranscriptReader {
         trimmed = 0
         toolIndex = [:]
         seen = []
+        question = nil
     }
 
     /// First read: the tail window, widened when the latest prompt isn't inside it.
@@ -347,7 +350,9 @@ nonisolated final class TranscriptReader {
             }
             guard seen.insert(key).inserted else { return }
             for block in message?["content"] as? [[String: Any]] ?? [] where block["type"] as? String == "tool_result" {
-                guard let toolId = block["tool_use_id"] as? String, let abs = toolIndex[toolId] else { continue }
+                guard let toolId = block["tool_use_id"] as? String else { continue }
+                if case .terminal(toolId) = question?.source { question = nil }
+                guard let abs = toolIndex[toolId] else { continue }
                 let i = abs - trimmed
                 guard i >= 0, i < items.count, case .tool(let name, _, _) = items[i].kind else { continue }
                 items[i].kind = .tool(name: name, result: Transcripts.resultText(block["content"]) ?? "",
@@ -376,6 +381,9 @@ nonisolated final class TranscriptReader {
                 let name = block["name"] as? String ?? String(localized: "Tool", comment: "Name for a tool call without one")
                 let toolId = block["id"] as? String ?? "x" + id(b)
                 toolIndex[toolId] = trimmed + items.count
+                if name == "AskUserQuestion" {
+                    question = AgentQuestion.parse(toolInput: block["input"] as? [String: Any] ?? [:], toolUseId: toolId)
+                }
                 append(TimelineItem(id: toolId, kind: .tool(name: name, result: nil, failed: false),
                                     text: Transcripts.summary(name, block["input"] as? [String: Any] ?? [:])))
             default:

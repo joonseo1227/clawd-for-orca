@@ -19,17 +19,28 @@ nonisolated struct OrcaAgent: Equatable, Sendable {
 
     var needsYou: Bool { state == "blocked" || state == "waiting" }
 
-    /// False for a session started in Orca's chat: Orca runs it without a terminal, so it can't be
-    /// shown, typed into or answered from Clawd. Orca names its pane after the session
-    /// ("structured-agent-session-<id>:<leaf>"); nothing else in `worktree.ps` marks it reliably.
+    /// False for a session started in Orca's chat: Orca runs it without a terminal, so there is
+    /// no screen to show or type into; messages and answers go through its session instead.
+    /// Orca names its pane after the session ("structured-agent-session-<id>:<leaf>"); nothing
+    /// else in `worktree.ps` marks it reliably.
     var hasTerminal: Bool { !paneKey.hasPrefix(Self.chatSessionPrefix) }
     static let chatSessionPrefix = "structured-agent-session-"
 
-    /// The tab Orca shows a chat session in ("agent-session:<session id>"); nil for a terminal.
-    var chatTabId: String? {
+    /// The Orca chat session's id; nil for a terminal.
+    var sessionId: String? {
         guard !hasTerminal, let tab = paneKey.split(separator: ":", maxSplits: 1).first else { return nil }
-        return "agent-session:" + tab.dropFirst(Self.chatSessionPrefix.count)
+        let id = String(tab.dropFirst(Self.chatSessionPrefix.count))
+        return id.isEmpty ? nil : id
     }
+
+    /// Clawd can send this agent a message: into its terminal, or through its chat session.
+    var canMessage: Bool { hasTerminal || sessionId != nil }
+
+    /// Claude's question dialog is up: it takes choices, not a typed message.
+    var asksQuestion: Bool { tool == "AskUserQuestion" }
+
+    /// The tab Orca shows a chat session in ("agent-session:<session id>"); nil for a terminal.
+    var chatTabId: String? { sessionId.map { "agent-session:" + $0 } }
 
     /// What Clawd does to mirror this agent's current tool.
     var activity: Activity {

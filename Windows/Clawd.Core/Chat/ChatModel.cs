@@ -70,6 +70,23 @@ public sealed class ChatModel : INotifyPropertyChanged
     private PermissionPrompt? _prompt;
     public PermissionPrompt? Prompt { get => _prompt; set { if (!Equals(_prompt, value)) { _prompt = value; OnPropertyChanged(); } } }
 
+    private AgentQuestion? _question;
+    /// <summary>Claude's unanswered questions for the selected agent; a new one starts with no answers.</summary>
+    public AgentQuestion? Question
+    {
+        get => _question;
+        set
+        {
+            if (Equals(_question, value)) return;
+            _question = value;
+            Answers = value?.EmptyAnswers() ?? [];
+            OnPropertyChanged();
+        }
+    }
+
+    /// <summary>Choices made so far in <see cref="Question"/>.</summary>
+    public List<AgentQuestion.Answer> Answers { get; private set; } = [];
+
     /// <summary>Unsent text kept per agent.</summary>
     public Dictionary<string, string> Drafts { get; } = [];
 

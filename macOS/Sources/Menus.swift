@@ -70,8 +70,7 @@ extension AppDelegate {
             openItem.representedObject = a.paneKey
             sub.addItem(openItem)
             if canSend {
-                // A session in Orca's chat takes no messages from Clawd, but the chat still shows it.
-                let title = !a.hasTerminal ? String(localized: "Show in Clawd")
+                let title = !a.canMessage ? String(localized: "Show in Clawd")
                     : a.needsYou ? String(localized: "Reply with Clawd") : String(localized: "Message with Clawd")
                 let sendItem = item(title, #selector(menuCompose(_:)))
                 sendItem.representedObject = a.paneKey

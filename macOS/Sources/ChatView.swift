@@ -119,7 +119,7 @@ struct ChatView: View {
     @discardableResult
     func drop(_ urls: [URL], on row: ChatRow) -> Bool {
         let text = FileDrop.text(for: urls)
-        guard !text.isEmpty, row.agent.hasTerminal else { return false }
+        guard !text.isEmpty, row.agent.canMessage else { return false }
         if model.showsTerminal && model.current?.id == row.id {
             actions.key(row.agent, FileDrop.paste(text))
         } else {
@@ -211,6 +211,8 @@ struct ChatView: View {
         return AgentTimeline(items: model.timeline, agent: row.id, live: row.kind == .working) {
             if row.kind == .permission {
                 permissionRequest(row)
+            } else if row.kind == .question && (model.question != nil || row.agent.asksQuestion) {
+                questionRequest(row)
             } else if row.kind == .working && !runningStep {
                 // Between steps: Claude is writing or about to call the next tool.
                 HStack(spacing: 8) {
@@ -230,6 +232,8 @@ struct ChatView: View {
                     }
                     if row.kind == .permission {
                         permissionRequest(row)
+                    } else if row.kind == .question && (model.question != nil || row.agent.asksQuestion) {
+                        questionRequest(row)
                     } else if let reply = row.agent.lastMessage, !reply.isEmpty, row.kind != .working {
                         MarkdownView(reply)
                     } else if row.kind == .working || model.busy {
@@ -338,6 +342,29 @@ struct ChatView: View {
         }
     }
 
+    /// Claude's questions with their choices; when they couldn't be read, a way to Orca.
+    @ViewBuilder
+    func questionRequest(_ row: ChatRow) -> some View {
+        if let question = model.question {
+            QuestionCard(question: question, answers: $model.answers, busy: model.busy) { answers in
+                actions.answerQuestion(row.agent, question, answers)
+            }
+        } else {
+            GroupBox {
+                HStack {
+                    Button("Answer in Orca") { actions.open(row.agent) }.glassButton(prominent: true)
+                    if model.busy { ProgressView().controlSize(.small) }
+                }
+                .controlSize(.large)
+                .buttonBorderShape(.capsule)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(4)
+            } label: {
+                Label("Claude has a question", systemImage: "questionmark.bubble.fill").foregroundStyle(.orange)
+            }
+        }
+    }
+
     func permission(_ p: PermissionPrompt, _ agent: OrcaAgent) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 10) {
@@ -370,12 +397,15 @@ struct ChatView: View {
     }
 
     func composer(_ row: ChatRow) -> some View {
-        // A permission dialog takes only its own answers: typed text would land in it. A session
-        // without a terminal takes nothing from Clawd.
-        let canType = row.kind != .permission && row.agent.hasTerminal
+        // A permission dialog or Claude's questions take only their own answers: typed text would
+        // land in the dialog.
+        let canType = row.kind != .permission && row.agent.canMessage && !takesChoices(row)
         let placeholder: String
         if canType { placeholder = row.kind == .question ? String(localized: "Reply") : String(localized: "Message") }
-        else if !row.agent.hasTerminal && row.kind != .permission { placeholder = String(localized: "Reply in Orca") }
+        else if takesChoices(row) {
+            placeholder = model.question == nil ? String(localized: "Answer the questions in Orca") : String(localized: "Choose your answers above")
+        }
+        else if !row.agent.canMessage && row.kind != .permission { placeholder = String(localized: "Reply in Orca") }
         else if let prompt = model.prompt { placeholder = String(localized: "Answer with the buttons above or ⌘1–\(prompt.options.count)", comment: "Shortcuts ⌘1 to ⌘n pick a permission answer") }
         else { placeholder = String(localized: "Answer the permission request in Orca") }
         let empty = model.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -480,8 +510,13 @@ struct ChatView: View {
         let text = model.draft.trimmingCharacters(in: .whitespacesAndNewlines)
         // Return reaches here even while the send button is disabled; the draft only clears once
         // the send is done, so a second press would send it again.
-        guard !text.isEmpty, row.kind != .permission, row.agent.hasTerminal, !model.busy else { return }
+        guard !text.isEmpty, row.kind != .permission, row.agent.canMessage, !takesChoices(row), !model.busy else { return }
         actions.send(row.agent, text)
+    }
+
+    /// Claude is asking its questions: they are answered with the card, not a message.
+    func takesChoices(_ row: ChatRow) -> Bool {
+        row.kind == .question && (row.agent.asksQuestion || model.question != nil)
     }
 }
 

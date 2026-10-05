@@ -35,8 +35,13 @@ internal sealed class TimelineView
 
     public UIElement Root => _scroll;
 
-    /// <summary>The permission dialog's first answer, when one is showing.</summary>
-    public Button? FirstAnswer { get; private set; }
+    /// <summary>The permission dialog's first answer, or the question card's first choice, when one is showing.</summary>
+    public Control? FirstAnswer { get; private set; }
+
+    private QuestionCard? _questionCard;
+
+    /// <summary>The question card showing, for Ctrl+1… on a one-click question.</summary>
+    public QuestionCard? QuestionCard => _questionCard;
 
     public void Update(ChatModel model, AppController app)
     {
@@ -62,6 +67,7 @@ internal sealed class TimelineView
             // The permission dialog, or a working indicator between steps.
             var runningStep = model.Timeline[^1].IsRunningStep;
             if (row.Kind == RowKind.Permission) children.Add(PermissionRequest(row, model, app));
+            else if (TakesChoices(row, model)) children.Add(QuestionRequest(row, model, app));
             else if (live && !runningStep) children.Add(Ui.Row(8, Ui.Spinner(), Ui.Secondary(L.Get("Timeline_Working"))));
         }
         var same = children.Count == _panel.Children.Count && children.Select((c, i) => ReferenceEquals(c, _panel.Children[i])).All(x => x);
@@ -198,9 +204,36 @@ internal sealed class TimelineView
     {
         if (!string.IsNullOrEmpty(row.Agent.Prompt)) children.Add(UserBubble(row.Agent.Prompt));
         if (row.Kind == RowKind.Permission) children.Add(PermissionRequest(row, model, app));
+        else if (TakesChoices(row, model)) children.Add(QuestionRequest(row, model, app));
         else if (!string.IsNullOrEmpty(row.Agent.LastMessage) && row.Kind != RowKind.Working) children.Add(Markdown(row.Agent.LastMessage));
         else if (row.Kind == RowKind.Working || model.Busy)
             children.Add(Ui.Row(8, Ui.Spinner(), Ui.Secondary(row.Agent.Tool is { } t ? L.Format("Timeline_Running", t) : L.Get("Timeline_Working"))));
+    }
+
+    // MARK: Questions
+
+    /// <summary>Claude is asking its questions: they are answered with the card, not a message.</summary>
+    public static bool TakesChoices(ChatRow row, ChatModel model) =>
+        row.Kind == RowKind.Question && (row.Agent.AsksQuestion || model.Question is not null);
+
+    /// <summary>Claude's questions with their choices; when they couldn't be read, a way to Orca.</summary>
+    private UIElement QuestionRequest(ChatRow row, ChatModel model, AppController app)
+    {
+        if (model.Question is { } question)
+        {
+            // Kept while the question and busy state stay the same, so a typed answer isn't rebuilt away.
+            if (_questionCard is not { } card || !card.Question.Equals(question) || card.Busy != model.Busy)
+                _questionCard = new QuestionCard(question, model.Answers, model.Busy, answers => app.ChatAnswer(question, answers, row.Agent));
+            FirstAnswer ??= _questionCard.FirstChoice;
+            return _questionCard.Root;
+        }
+        _questionCard = null;
+        var body = new StackPanel { Spacing = 10 };
+        body.Children.Add(Ui.Row(8, Ui.Icon(Ui.Glyph.Message, "ClawdOrangeIcon", 16), Ui.Text(L.Get("Timeline_Question"), "ClawdOrangeText")));
+        var answer = Ui.Row(8, Ui.Button(L.Get("Timeline_AnswerInOrca"), () => app.OpenFromChat(row.Agent), accent: true));
+        if (model.Busy) answer.Children.Add(Ui.Spinner());
+        body.Children.Add(answer);
+        return Ui.Card(body);
     }
 
     // MARK: Permission

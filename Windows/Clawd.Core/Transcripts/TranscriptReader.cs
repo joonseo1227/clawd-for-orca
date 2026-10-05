@@ -30,6 +30,9 @@ public sealed class TranscriptReader(string path)
     private int _sequence;             // entries read since the last reset, for positional ids
     private List<TimelineItem> _last = [];
 
+    /// <summary>Claude's AskUserQuestion still waiting for an answer, if any.</summary>
+    public Orca.AgentQuestion? Question { get; private set; }
+
     /// <summary>Opens for reading while Claude Code keeps appending (and may replace or delete it).</summary>
     internal static FileStream OpenShared(string path) =>
         new(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete, 1, FileOptions.SequentialScan);
@@ -90,6 +93,7 @@ public sealed class TranscriptReader(string path)
         _trimmed = 0;
         _toolIndex = [];
         _seen = [];
+        Question = null;
     }
 
     /// <summary>First read: the tail window, widened when the latest prompt isn't inside it.</summary>
@@ -166,7 +170,9 @@ public sealed class TranscriptReader(string path)
             if (!_seen.Add(key)) return;
             foreach (var block in message.Objects("content").Where(b => b.Str("type") == "tool_result"))
             {
-                if (block.Str("tool_use_id") is not { } toolId || !_toolIndex.TryGetValue(toolId, out var abs)) continue;
+                if (block.Str("tool_use_id") is not { } toolId) continue;
+                if (Question?.Source is Orca.AgentQuestion.QuestionSource.Terminal(var asked) && asked == toolId) Question = null;
+                if (!_toolIndex.TryGetValue(toolId, out var abs)) continue;
                 var i = abs - _trimmed;
                 if (i < 0 || i >= _items.Count || _items[i].Kind != TimelineKind.Tool) continue;
                 _items[i] = _items[i] with { Result = Transcripts.ResultText(block["content"]) ?? "", Failed = block.Bool("is_error") == true };
@@ -205,6 +211,7 @@ public sealed class TranscriptReader(string path)
                     var name = block.Str("name") ?? Strings.Get("Tool_Unnamed");
                     var toolId = block.Str("id") ?? "x" + Id(b);
                     _toolIndex[toolId] = _trimmed + _items.Count;
+                    if (name == "AskUserQuestion") Question = Orca.AgentQuestion.FromToolInput(block.Obj("input") ?? [], toolId);
                     Append(TimelineItem.Tool(toolId, name, Transcripts.Summary(name, block.Obj("input") ?? [])));
                     break;
             }

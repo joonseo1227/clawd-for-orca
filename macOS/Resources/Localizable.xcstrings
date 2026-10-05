@@ -308,12 +308,32 @@
         }
       }
     },
+    "Answer in Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca에서 답하기"
+          }
+        }
+      }
+    },
     "Answer the permission request in Orca": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "Orca에서 권한 요청에 답해 주세요"
+          }
+        }
+      }
+    },
+    "Answer the questions in Orca": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orca에서 질문에 답해 주세요"
           }
         }
       }
@@ -325,6 +345,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "위 버튼이나 ⌘1–%lld 키로 답해 주세요"
+          }
+        }
+      }
+    },
+    "Answered %@": {
+      "comment": "%@ is the agent (worktree) name",
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@에게 답했어요"
           }
         }
       }
@@ -416,6 +447,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "업데이트 자동 확인"
+          }
+        }
+      }
+    },
+    "Choose any": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "여러 개 고를 수 있어요"
+          }
+        }
+      }
+    },
+    "Choose your answers above": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "위에서 답을 골라 주세요"
+          }
+        }
+      }
+    },
+    "Claude has a question": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude의 질문"
+          }
+        }
+      }
+    },
+    "Claude has questions": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude의 질문"
           }
         }
       }
@@ -1537,6 +1608,26 @@
         }
       }
     },
+    "Send Answers": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "답 보내기"
+          }
+        }
+      }
+    },
+    "Send Answers  ⌘↩": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "답 보내기  ⌘↩"
+          }
+        }
+      }
+    },
     "Sent to %@": {
       "comment": "%@ is the agent (worktree) name",
       "localizations": {
@@ -1605,6 +1696,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "재채기"
+          }
+        }
+      }
+    },
+    "Something else": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "직접 입력"
+          }
+        }
+      }
+    },
+    "Something else (optional)": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "직접 입력 (선택)"
           }
         }
       }

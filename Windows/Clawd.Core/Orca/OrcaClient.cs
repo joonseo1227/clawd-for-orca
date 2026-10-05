@@ -4,7 +4,7 @@ using System.Text.Json.Nodes;
 namespace Clawd.Core.Orca;
 
 /// <summary>Orca requests, runtime pipe first with the CLI as fallback. Safe to use from any thread.</summary>
-public sealed class OrcaClient(OrcaRuntime runtime, string? cli)
+public sealed partial class OrcaClient(OrcaRuntime runtime, string? cli)
 {
     /// <summary>Identifies Clawd's terminal size override to Orca, which keeps one per client.</summary>
     public const string ClientId = "com.joonseo1227.clawd-for-orca.windows";
@@ -76,6 +76,8 @@ public sealed class OrcaClient(OrcaRuntime runtime, string? cli)
     /// multi-line message goes in as a bracketed paste so its newlines don't submit it halfway.</summary>
     public async Task<bool> SendAsync(string text, OrcaAgent agent, bool enter)
     {
+        // A chat session takes whole messages only; there are no keystrokes to send it.
+        if (agent.SessionId is { } session) return enter && await SessionSendAsync(text, session).ConfigureAwait(false);
         if (await HandleAsync(agent).ConfigureAwait(false) is not { } handle) return false;
         var payload = enter && text.Contains('\n') ? $"\u001b[200~{text}\u001b[201~" : text;
         string[] args = enter

@@ -34,6 +34,16 @@ public sealed class Attention
     public Dictionary<string, FinishedTask> Finished { get; } = [];
     /// <summary>pane → permission dialog on screen while waiting.</summary>
     public Dictionary<string, PermissionPrompt> Permissions { get; } = [];
+    /// <summary>pane → a chat session's pending permission request.</summary>
+    public Dictionary<string, SessionApproval> Approvals { get; } = [];
+    /// <summary>pane → Claude's unanswered questions.</summary>
+    public Dictionary<string, AgentQuestion> Questions { get; } = [];
+
+    /// <summary>The agent waits on a permission request rather than a reply or Claude's questions. Orca
+    /// reports a terminal's permission dialog as "waiting", like a question, so the screen tells them
+    /// apart; a chat session reports its questions as "blocked", like a request.</summary>
+    public bool AsksPermission(OrcaAgent a) =>
+        !Questions.ContainsKey(a.PaneKey) && !a.AsksQuestion && (Permissions.ContainsKey(a.PaneKey) || a.State == "blocked");
 
     /// <summary>The user is already looking at this agent in Orca, so don't nag.</summary>
     public Func<OrcaAgent, bool> Looking { get; set; } = _ => false;
@@ -70,6 +80,8 @@ public sealed class Attention
             if (prev?.State == a.State) continue;
             Acknowledged.Remove(a.PaneKey);
             Permissions.Remove(a.PaneKey);
+            Approvals.Remove(a.PaneKey);
+            Questions.Remove(a.PaneKey);
             if (a.NeedsYou)
             {
                 WaitingSince[a.PaneKey] = now;
@@ -114,6 +126,8 @@ public sealed class Attention
         LastNudge.Clear();
         Finished.Clear();
         Permissions.Clear();
+        Approvals.Clear();
+        Questions.Clear();
         Acknowledged.Clear();
     }
 
@@ -122,7 +136,7 @@ public sealed class Attention
     {
         RowKind Kind(OrcaAgent a)
         {
-            if (a.NeedsYou) return Permissions.ContainsKey(a.PaneKey) || a.State == "blocked" ? RowKind.Permission : RowKind.Question;
+            if (a.NeedsYou) return AsksPermission(a) ? RowKind.Permission : RowKind.Question;
             if (a.State == "working") return RowKind.Working;
             return FinishedAt(a, now) is not null ? RowKind.Finished : RowKind.Resting;
         }

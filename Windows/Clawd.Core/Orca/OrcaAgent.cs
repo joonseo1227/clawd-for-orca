@@ -23,14 +23,24 @@ public sealed record OrcaAgent(
 
     public bool NeedsYou => State is "blocked" or "waiting";
 
-    /// <summary>False for a session started in Orca's chat: Orca runs it without a terminal, so it can't be
-    /// shown, typed into or answered from Clawd. Orca names its pane after the session
-    /// ("structured-agent-session-&lt;id&gt;:&lt;leaf&gt;"); nothing else in `worktree.ps` marks it reliably.</summary>
+    /// <summary>False for a session started in Orca's chat: Orca runs it without a terminal, so there is no
+    /// screen to show or type into; messages and answers go through its session instead. Orca names its
+    /// pane after the session ("structured-agent-session-&lt;id&gt;:&lt;leaf&gt;"); nothing else in
+    /// `worktree.ps` marks it reliably.</summary>
     public bool HasTerminal => !PaneKey.StartsWith(ChatSessionPrefix, StringComparison.Ordinal);
     public const string ChatSessionPrefix = "structured-agent-session-";
 
+    /// <summary>The Orca chat session's id; null for a terminal.</summary>
+    public string? SessionId => HasTerminal ? null : PaneKey.Split(':', 2)[0][ChatSessionPrefix.Length..] is { Length: > 0 } id ? id : null;
+
+    /// <summary>Clawd can send this agent a message: into its terminal, or through its chat session.</summary>
+    public bool CanMessage => HasTerminal || SessionId is not null;
+
+    /// <summary>Claude's question dialog is up: it takes choices, not a typed message.</summary>
+    public bool AsksQuestion => Tool == "AskUserQuestion";
+
     /// <summary>The tab Orca shows a chat session in ("agent-session:&lt;session id&gt;"); null for a terminal.</summary>
-    public string? ChatTabId => HasTerminal ? null : "agent-session:" + PaneKey.Split(':', 2)[0][ChatSessionPrefix.Length..];
+    public string? ChatTabId => SessionId is { } id ? "agent-session:" + id : null;
 
     /// <summary>What Clawd does to mirror this agent's current tool.</summary>
     public Activity Activity => Tool switch

@@ -170,6 +170,80 @@ public sealed class OrcaWatcher
         });
     }
 
+    /// <summary>Picks an answer in a chat session's permission request.</summary>
+    public Task<AnswerResult> ApproveAsync(int number, SessionApproval approval, OrcaAgent agent)
+    {
+        var client = Client;
+        if (agent.SessionId is not { } id) return Task.FromResult(AnswerResult.Failed);
+        return _keyQueue.Enqueue(() => client.SessionApproveAsync(approval, number, id));
+    }
+
+    /// <summary>Answers Claude's questions: through a chat session, or by working the terminal's dialog
+    /// the way a person would, one question at a time. Before the first key the dialog has to show the
+    /// first question, and each step has to land before the next is typed: a key that misses the
+    /// dialog would go to the agent's input box instead.</summary>
+    public Task<AnswerResult> AnswerAsync(AgentQuestion question, IReadOnlyList<AgentQuestion.Answer> answers, OrcaAgent agent)
+    {
+        var client = Client;
+        return _keyQueue.Enqueue(() => agent.SessionId is { } id
+            ? client.SessionAnswerAsync(question, answers, id)
+            : TypeAnswersAsync(question, answers, client, agent));
+    }
+
+    private static async Task<AnswerResult> TypeAnswersAsync(AgentQuestion question, IReadOnlyList<AgentQuestion.Answer> answers,
+        OrcaClient client, OrcaAgent agent)
+    {
+        if (question.Items.Count == 0 || await client.ScreenAsync(agent).ConfigureAwait(false) is not { } screen) return AnswerResult.Failed;
+        var first = question.Items[0];
+        // Reads the screen until `done` holds; false after a couple of seconds without it.
+        async Task<bool> Wait(Func<IReadOnlyList<string>, bool> done)
+        {
+            for (var i = 0; i < 25; i++)
+            {
+                await Task.Delay(100).ConfigureAwait(false);
+                if (await client.ScreenAsync(agent).ConfigureAwait(false) is { } s && done(s)) return true;
+            }
+            return false;
+        }
+        async Task<bool> Key(string key)
+        {
+            var ok = await client.SendAsync(key, agent, enter: false).ConfigureAwait(false);
+            await Task.Delay(120).ConfigureAwait(false);   // Claude Code reads each key on its own
+            return ok;
+        }
+        // Someone may have stepped through the dialog in Orca already: go back to the start.
+        if (!QuestionDialog.Showing(first, screen))
+        {
+            if (!QuestionDialog.Reviewing(screen) && !question.Items.Any(i => QuestionDialog.Showing(i, screen))) return AnswerResult.Gone;
+            foreach (var _ in question.Items) if (!await Key(QuestionDialog.Previous).ConfigureAwait(false)) return AnswerResult.Failed;
+            if (!await Wait(s => QuestionDialog.Showing(first, s)).ConfigureAwait(false)) return AnswerResult.Failed;
+        }
+        for (var i = 0; i < question.Items.Count; i++)
+        {
+            var item = question.Items[i];
+            var ticked = item.MultiSelect && await client.ScreenAsync(agent).ConfigureAwait(false) is { } now ? QuestionDialog.Ticked(now) : [];
+            if (QuestionDialog.Keys(item, answers[i], ticked) is not { } keys) return AnswerResult.Failed;
+            foreach (var key in keys) if (!await Key(key).ConfigureAwait(false)) return AnswerResult.Failed;
+            var next = i + 1 < question.Items.Count ? question.Items[i + 1] : null;
+            if (!await Wait(s => next is not null ? QuestionDialog.Showing(next, s) : !QuestionDialog.Showing(item, s)).ConfigureAwait(false))
+                return AnswerResult.Failed;
+        }
+        // Several questions, or a multiple-choice one, end on a review to confirm.
+        if (await client.ScreenAsync(agent).ConfigureAwait(false) is { } end && QuestionDialog.Reviewing(end))
+        {
+            if (!await client.SendAsync("1", agent, enter: false).ConfigureAwait(false)) return AnswerResult.Failed;
+            if (!await Wait(s => !QuestionDialog.Reviewing(s)).ConfigureAwait(false)) return AnswerResult.Failed;
+        }
+        return AnswerResult.Sent;
+    }
+
+    /// <summary>A chat session's latest turn and what it waits on.</summary>
+    public Task<SessionSnapshot?> SessionAsync(OrcaAgent agent)
+    {
+        var client = Client;
+        return agent.SessionId is { } id ? Task.Run(() => client.SessionAsync(id)) : Task.FromResult<SessionSnapshot?>(null);
+    }
+
     /// <summary>The rendered terminal screen, one string per row.</summary>
     public Task<IReadOnlyList<string>?> ScreenAsync(OrcaAgent agent)
     {

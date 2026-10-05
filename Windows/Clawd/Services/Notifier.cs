@@ -82,9 +82,9 @@ internal sealed class Notifier : IDisposable
                 .SetTag(category.ToString())
                 .SetGroup(Group(agent.PaneKey));
             if (!string.IsNullOrEmpty(body)) builder.AddText(body);
-            // A permission dialog is answered by choosing an option, which needs the chat. A session in
-            // Orca's chat takes no reply from Clawd.
-            if (category != Category.Permission && agent.HasTerminal)
+            // A permission dialog or Claude's questions are answered by choosing options, which needs
+            // the chat.
+            if (category != Category.Permission && agent.CanMessage && !agent.AsksQuestion)
             {
                 builder.AddTextBox("reply", L.Get("Toast_ReplyPlaceholder"), L.Get("Toast_ReplyTitle"));
                 builder.AddButton(new AppNotificationButton(L.Get("Toast_Send"))

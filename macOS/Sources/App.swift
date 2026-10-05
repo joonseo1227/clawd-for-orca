@@ -23,6 +23,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let sign = SignBoard()
     var chat: ChatPanel!
     var permissions: [String: PermissionPrompt] = [:]   // pane -> prompt on screen while waiting
+    var approvals: [String: SessionApproval] = [:]      // pane -> chat session's pending request
+    var questions: [String: AgentQuestion] = [:]        // pane -> Claude's unanswered questions
     var titles: [String: String] = [:]
     let statusMenu = NSMenu()
     var lastHotKey: TimeInterval = 0
@@ -152,6 +154,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         chat = ChatPanel(actions: ChatActions(
             send: { [weak self] a, text in self?.chatSend(text, to: a) },
             answer: { [weak self] a, n in self?.chatAnswer(n, to: a) },
+            answerQuestion: { [weak self] a, q, answers in self?.chatAnswer(q, answers, to: a) },
             key: { [weak self] a, keys in self?.chatKey(keys, to: a) },
             open: { [weak self] a in
                 self?.open(a)
@@ -277,7 +280,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @objc func toggleOrca() {
         if orca.enabled {
             orca.stop()
-            waitingSince = [:]; lastNudge = [:]; finished = [:]; permissions = [:]; acknowledged = [:]
+            waitingSince = [:]; lastNudge = [:]; finished = [:]; permissions = [:]; approvals = [:]; questions = [:]; acknowledged = [:]
             pet.workActivities = []
             say(String(localized: "Orca integration turned off"), symbol: "pause.circle.fill")
         } else {

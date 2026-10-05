@@ -210,12 +210,16 @@ public class EnglishTextTests
         Assert.Equal("Task complete", Sign.Done(A("d", "done"), TimeSpan.FromMinutes(2)).Title);
         Assert.Equal("Took 2 min · Click to keep talking", Sign.Done(A("d", "done"), TimeSpan.FromMinutes(2)).Hint);
         Assert.Equal("Click to keep talking", Sign.Done(A("d", "done"), null).Hint);
-        // A session in Orca's chat is answered there: its cards invite a look, not a reply.
+        // A session in Orca's chat takes replies through Orca's API, like a terminal.
         var chat = OrcaAgent.ChatSessionPrefix + "s1:leaf";
-        Assert.Equal("+1 more · Waiting for 4 min · Click to view", Sign.Waiting([A(chat, "waiting"), A("q", "waiting")], null, T0.AddMinutes(-4), T0).Hint);
-        Assert.Equal("Just started waiting · Click to view", Sign.Waiting([A(chat, "waiting")], null, T0.AddSeconds(-30), T0).Hint);
-        Assert.Equal("Took 2 min · Click to view", Sign.Done(A(chat, "done"), TimeSpan.FromMinutes(2)).Hint);
-        Assert.Equal("Click to view", Sign.Done(A(chat, "done"), null).Hint);
+        Assert.Equal("Just started waiting · Click to reply", Sign.Waiting([A(chat, "waiting")], null, T0.AddSeconds(-30), T0).Hint);
+        Assert.Equal("Took 2 min · Click to keep talking", Sign.Done(A(chat, "done"), TimeSpan.FromMinutes(2)).Hint);
+        // One Clawd can't name the session of is answered in Orca: its cards invite a look, not a reply.
+        var unnamed = OrcaAgent.ChatSessionPrefix + ":leaf";
+        Assert.Equal("+1 more · Waiting for 4 min · Click to view", Sign.Waiting([A(unnamed, "waiting"), A("q", "waiting")], null, T0.AddMinutes(-4), T0).Hint);
+        Assert.Equal("Just started waiting · Click to view", Sign.Waiting([A(unnamed, "waiting")], null, T0.AddSeconds(-30), T0).Hint);
+        Assert.Equal("Took 2 min · Click to view", Sign.Done(A(unnamed, "done"), TimeSpan.FromMinutes(2)).Hint);
+        Assert.Equal("Click to view", Sign.Done(A(unnamed, "done"), null).Hint);
         Assert.Equal("Can’t find Orca", Sign.Summary(false, true, [], [], T0).Title);
         Assert.Equal("Orca integration off", Sign.Summary(true, false, [], [], T0).Title);
         Assert.Equal("Everyone’s resting", Sign.Summary(true, true, [], [], T0).Title);

@@ -124,8 +124,8 @@ public class AttentionTests
         Assert.Equal("", Sign.StatusTitle(false, 2, 1, 1));
         Assert.Equal("작업 완료", Sign.Done(A("d", "done"), TimeSpan.FromMinutes(2)).Title);
         Assert.Equal("2분 걸림 · 클릭해서 이어서 말하기", Sign.Done(A("d", "done"), TimeSpan.FromMinutes(2)).Hint);
-        var chat = OrcaAgent.ChatSessionPrefix + "s1:leaf";
-        Assert.Equal("2분 걸림 · 클릭해서 보기", Sign.Done(A(chat, "done"), TimeSpan.FromMinutes(2)).Hint);
-        Assert.Equal("4분 전부터 기다리는 중 · 클릭해서 보기", Sign.Waiting([A(chat, "waiting")], null, T0.AddMinutes(-4), T0).Hint);
+        var unnamed = OrcaAgent.ChatSessionPrefix + ":leaf";
+        Assert.Equal("2분 걸림 · 클릭해서 보기", Sign.Done(A(unnamed, "done"), TimeSpan.FromMinutes(2)).Hint);
+        Assert.Equal("4분 전부터 기다리는 중 · 클릭해서 보기", Sign.Waiting([A(unnamed, "waiting")], null, T0.AddMinutes(-4), T0).Hint);
     }
 }

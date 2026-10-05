@@ -146,6 +146,87 @@ final class OrcaWatcher {
         }
     }
 
+    /// Picks an answer in a chat session's permission request.
+    func approve(_ number: Int, _ approval: SessionApproval, in agent: OrcaAgent,
+                 done: @escaping @MainActor @Sendable (AnswerResult) -> Void) {
+        let client = client
+        guard let id = agent.sessionId else { done(.failed); return }
+        keyQueue.async {
+            let result = client.sessionApprove(approval, option: number, in: id)
+            onMain { done(result) }
+        }
+    }
+
+    /// Answers Claude's questions: through a chat session, or by working the terminal's dialog
+    /// the way a person would, one question at a time. Before the first key the dialog has to
+    /// show the first question, and each step has to land before the next is typed: a key that
+    /// misses the dialog would go to the agent's input box instead.
+    func answer(_ question: AgentQuestion, _ answers: [AgentQuestion.Answer], to agent: OrcaAgent,
+                done: @escaping @MainActor @Sendable (AnswerResult) -> Void) {
+        let client = client
+        keyQueue.async {
+            let result: AnswerResult
+            if let id = agent.sessionId {
+                result = client.sessionAnswer(question, answers, in: id)
+            } else {
+                result = Self.typeAnswers(question, answers, client: client, agent: agent)
+            }
+            onMain { done(result) }
+        }
+    }
+
+    private nonisolated static func typeAnswers(_ question: AgentQuestion, _ answers: [AgentQuestion.Answer],
+                                                client: OrcaClient, agent: OrcaAgent) -> AnswerResult {
+        guard let first = question.items.first, let screen = client.screen(of: agent) else { return .failed }
+        /// Reads the screen until `done` holds; false after a couple of seconds without it.
+        func wait(_ done: ([String]) -> Bool) -> Bool {
+            for _ in 0..<25 {
+                usleep(100_000)
+                if let s = client.screen(of: agent), done(s) { return true }
+            }
+            return false
+        }
+        // Someone may have stepped through the dialog in Orca already: go back to the start.
+        if !QuestionDialog.showing(first, on: screen) {
+            guard QuestionDialog.reviewing(screen) || question.items.contains(where: { QuestionDialog.showing($0, on: screen) }) else {
+                return .gone
+            }
+            for _ in question.items {
+                guard client.send(QuestionDialog.previous, to: agent, enter: false) else { return .failed }
+                usleep(120_000)
+            }
+            guard wait({ QuestionDialog.showing(first, on: $0) }) else { return .failed }
+        }
+        for (i, item) in question.items.enumerated() {
+            let ticked = item.multiSelect ? client.screen(of: agent).map(QuestionDialog.ticked) ?? [] : []
+            guard let keys = QuestionDialog.keys(for: item, answers[i], ticked: ticked) else { return .failed }
+            for key in keys {
+                guard client.send(key, to: agent, enter: false) else { return .failed }
+                usleep(120_000)   // Claude Code reads each key on its own
+            }
+            let next = question.items.indices.contains(i + 1) ? question.items[i + 1] : nil
+            guard wait({ s in next.map { QuestionDialog.showing($0, on: s) } ?? !QuestionDialog.showing(item, on: s) }) else {
+                return .failed
+            }
+        }
+        // Several questions, or a multiple-choice one, end on a review to confirm.
+        if let s = client.screen(of: agent), QuestionDialog.reviewing(s) {
+            guard client.send("1", to: agent, enter: false) else { return .failed }
+            guard wait({ !QuestionDialog.reviewing($0) }) else { return .failed }
+        }
+        return .sent
+    }
+
+    /// A chat session's latest turn and what it waits on.
+    func session(of agent: OrcaAgent, done: @escaping @MainActor @Sendable (SessionSnapshot?) -> Void) {
+        let client = client
+        guard let id = agent.sessionId else { done(nil); return }
+        DispatchQueue.global(qos: .userInitiated).async {
+            let snapshot = client.session(id)
+            onMain { done(snapshot) }
+        }
+    }
+
     /// The rendered terminal screen, one string per row.
     func screen(of agent: OrcaAgent, done: @escaping @MainActor @Sendable ([String]?) -> Void) {
         let client = client
@@ -233,6 +314,8 @@ nonisolated struct OrcaClient: Sendable {
     /// Types `text`, then Enter when `enter` is set. A multi-line message goes in as a
     /// bracketed paste so its newlines don't submit it halfway.
     func send(_ text: String, to agent: OrcaAgent, enter: Bool) -> Bool {
+        // A chat session takes whole messages only; there are no keystrokes to send it.
+        if let id = agent.sessionId { return enter && sessionSend(text, to: id) }
         guard let handle = handle(for: agent) else { return false }
         let payload = enter && text.contains("\n") ? "\u{1b}[200~\(text)\u{1b}[201~" : text
         let ok = request("terminal.send", ["terminal": handle, "text": payload, "enter": enter],

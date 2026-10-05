@@ -50,7 +50,7 @@ internal sealed partial class AppController
     private async void NotifyWaiting(OrcaAgent a, Task reading)
     {
         await reading;
-        var permission = Attention.Permissions.ContainsKey(a.PaneKey) || a.State == "blocked";
+        var permission = Attention.AsksPermission(a);
         Notifier.Post(permission ? Notifier.Category.Permission : Notifier.Category.Question, a,
             L.Get(permission ? "Toast_Permission" : "Toast_Reply"), a.Ask, Settings.Sound);
     }
@@ -83,7 +83,9 @@ internal sealed partial class AppController
         {
             var first = waiting[0];
             var prompt = Attention.Permissions.GetValueOrDefault(first.PaneKey);
-            _sign.Set(Sign.Waiting(waiting, prompt, Attention.Since(first, now), now), () => OpenChat(first.PaneKey), () =>
+            var card = Sign.Waiting(waiting, prompt, Attention.Since(first, now), now,
+                Attention.Questions.GetValueOrDefault(first.PaneKey), Attention.AsksPermission(first));
+            _sign.Set(card, () => OpenChat(first.PaneKey), () =>
             {
                 // Seen it: no card or nagging for this request until the agent's state changes.
                 foreach (var a in waiting) Attention.Acknowledged[a.PaneKey] = a.State;
@@ -181,6 +183,11 @@ internal sealed partial class AppController
         // Open the resting section when there is nothing else to show or a resting agent is picked.
         Model.ShowResting = Model.Rows.All(r => r.Kind == RowKind.Resting) || Model.Current?.Kind == RowKind.Resting;
         SelectionChanged(Model.Selected);
+        // Agents already waiting when Clawd started were never read: a chat session's questions look
+        // like a permission request until they are.
+        foreach (var a in Orca.Waiting.Where(a => a.PaneKey != Model.Selected && (a.SessionId is not null || a.AsksQuestion)
+            && !Attention.Questions.ContainsKey(a.PaneKey) && !Attention.Approvals.ContainsKey(a.PaneKey)).ToList())
+            _ = LoadPrompt(a);
         if (TestHooks.Draft is { } draft) Model.Draft = draft;
         _ = RefreshTitles();
 
@@ -220,6 +227,7 @@ internal sealed partial class AppController
         // the terminal fit off the dead pane.
         if (Model.Selected is { } selected && rows.All(r => r.Id != selected)) Model.Selected = rows.FirstOrDefault()?.Id;
         Model.Prompt = Model.Current is { } c ? Attention.Permissions.GetValueOrDefault(c.Id) : null;
+        Model.Question = Model.Current is { Agent.NeedsYou: true } q ? Attention.Questions.GetValueOrDefault(q.Id) : null;
     }
 
     private void SelectionChanged(string? key)
@@ -244,6 +252,11 @@ internal sealed partial class AppController
     private async void PollTimeline()
     {
         if (_readingTranscript) return;   // the last read is still running
+        if (Model.Current?.Agent is { SessionId: not null } session)
+        {
+            PollSession(session);
+            return;
+        }
         if (Model.Current?.Agent is not { } a || a.AgentType is not ("claude" or ""))
         {
             // Only Claude Code writes a transcript; other agents get the summary view.
@@ -258,25 +271,64 @@ internal sealed partial class AppController
         var showingNothing = Model.Timeline.Count == 0;
         string? path = null;
         IReadOnlyList<TimelineItem>? items = null;
+        AgentQuestion? question = null;
         try
         {
-            (path, items) = await Task.Run(() =>
+            (path, items, question) = await Task.Run(() =>
             {
                 var p = cached ?? TestHooks.FakeTranscript(a.PaneKey) ?? Transcripts.Locate(a.PaneKey, a.Path, a.Prompt);
-                if (p is null) return (p, (IReadOnlyList<TimelineItem>?)null);
+                if (p is null) return (p, (IReadOnlyList<TimelineItem>?)null, (AgentQuestion?)null);
                 // Only what was appended since the last read is parsed; null when nothing changed.
-                var read = Transcripts.Reader(p).Timeline();
-                return (p, read.Changed || showingNothing ? read.Items : null);
+                var reader = Transcripts.Reader(p);
+                var read = reader.Timeline();
+                return (p, read.Changed || showingNothing ? read.Items : null, reader.Question);
             });
         }
         catch (Exception e) { Log.Error($"transcript: {e.Message}"); }
         _readingTranscript = false;
         if (path is not null && cached is null) _transcripts[key] = (path, now);
+        if (path is not null) SetQuestion(key, a.AsksQuestion ? question : null);
         if (Model.Current?.Id != key) return;
         Model.TimelineReady = true;
         // A lookup that misses once (session file being rewritten) must not blank the view.
         if (path is null && cached is null && !_transcripts.ContainsKey(key)) Model.Timeline = [];
         if (items is not null) Model.Timeline = items;
+    }
+
+    /// <summary>Follows the selected chat session's history: its latest turn and what it waits on.</summary>
+    private async void PollSession(OrcaAgent a)
+    {
+        _readingTranscript = true;
+        var snapshot = await Orca.SessionAsync(a);
+        _readingTranscript = false;
+        if (snapshot is not null) Apply(snapshot, a.PaneKey);
+        if (Model.Current?.Id != a.PaneKey) return;
+        Model.TimelineReady = true;
+        if (snapshot is not null) Model.Timeline = snapshot.Timeline;
+    }
+
+    /// <summary>Keeps what a chat session waits on, so its row, card and answers match it.</summary>
+    private void Apply(SessionSnapshot snapshot, string pane)
+    {
+        if (snapshot.Approval is { } approval)
+        {
+            Attention.Approvals[pane] = approval;
+            Attention.Permissions[pane] = approval.Prompt;
+        }
+        else
+        {
+            Attention.Approvals.Remove(pane);
+            Attention.Permissions.Remove(pane);
+        }
+        SetQuestion(pane, snapshot.Question);
+        RefreshChat();
+    }
+
+    private void SetQuestion(string pane, AgentQuestion? question)
+    {
+        if (Equals(Attention.Questions.GetValueOrDefault(pane), question)) return;
+        if (question is null) Attention.Questions.Remove(pane); else Attention.Questions[pane] = question;
+        RefreshChat();
     }
 
     /// <summary>Refreshes the terminal view; one read at a time so a slow CLI never piles up.</summary>
@@ -326,16 +378,45 @@ internal sealed partial class AppController
         }
     }
 
-    /// <summary>Reads the agent's screen to see whether it is showing a permission dialog.</summary>
+    /// <summary>Reads what the agent is asking: a chat session's pending request or questions, or the
+    /// permission dialog on a terminal's screen and Claude's questions in its transcript.</summary>
     private async Task LoadPrompt(OrcaAgent a)
     {
-        if (!a.HasTerminal) return;   // answered in Orca
+        if (a.SessionId is not null)
+        {
+            Model.SetBusy(a.PaneKey, true);
+            var snapshot = await Orca.SessionAsync(a);
+            Model.SetBusy(a.PaneKey, false);
+            if (snapshot is not null) Apply(snapshot, a.PaneKey);
+            return;
+        }
+        if (!a.HasTerminal) return;
+        if (a.AsksQuestion) _ = LoadQuestion(a);
         Model.SetBusy(a.PaneKey, true);
         var lines = await Orca.ScreenAsync(a);
         var prompt = lines is null ? null : PermissionPrompt.Parse(lines);
         if (prompt is null) Attention.Permissions.Remove(a.PaneKey); else Attention.Permissions[a.PaneKey] = prompt;
         Model.SetBusy(a.PaneKey, false);
         RefreshChat();
+    }
+
+    /// <summary>Claude's questions from the agent's transcript, which has them in full.</summary>
+    private async Task LoadQuestion(OrcaAgent a)
+    {
+        AgentQuestion? question = null;
+        try
+        {
+            question = await Task.Run(() =>
+            {
+                var path = TestHooks.FakeTranscript(a.PaneKey) ?? Transcripts.Locate(a.PaneKey, a.Path, a.Prompt);
+                if (path is null) return null;
+                var reader = Transcripts.Reader(path);
+                reader.Timeline();
+                return reader.Question;
+            });
+        }
+        catch (Exception e) { Log.Error($"transcript: {e.Message}"); }
+        SetQuestion(a.PaneKey, question);
     }
 
     public async void ChatSend(string text, OrcaAgent a)
@@ -362,7 +443,9 @@ internal sealed partial class AppController
         if (!Attention.Permissions.TryGetValue(a.PaneKey, out var prompt)) return;
         var title = prompt.Options.FirstOrDefault(o => o.Number == number)?.Title ?? L.Format("Notice_OptionNumber", number);
         Model.SetBusy(a.PaneKey, true);
-        var result = await Orca.AnswerAsync(number, a, prompt);
+        var result = Attention.Approvals.TryGetValue(a.PaneKey, out var approval)
+            ? await Orca.ApproveAsync(number, approval, a)
+            : await Orca.AnswerAsync(number, a, prompt);
         Model.SetBusy(a.PaneKey, false);
         Orca.PollSoon();
         switch (result)
@@ -370,6 +453,7 @@ internal sealed partial class AppController
             case OrcaWatcher.AnswerResult.Sent:
                 Model.Notice = ChatNotice.Success($"{a.Name}: {title}");
                 Attention.Permissions.Remove(a.PaneKey);
+                Attention.Approvals.Remove(a.PaneKey);
                 Handled(a);
                 break;
             case OrcaWatcher.AnswerResult.Gone:
@@ -385,15 +469,41 @@ internal sealed partial class AppController
         }
     }
 
+    public async void ChatAnswer(AgentQuestion question, IReadOnlyList<AgentQuestion.Answer> answers, OrcaAgent a)
+    {
+        if (!question.Complete(answers)) return;
+        Model.SetBusy(a.PaneKey, true);
+        var result = await Orca.AnswerAsync(question, answers, a);
+        Model.SetBusy(a.PaneKey, false);
+        Orca.PollSoon();
+        switch (result)
+        {
+            case OrcaWatcher.AnswerResult.Sent:
+                Model.Notice = ChatNotice.Success(L.Format("Notice_Answered", a.Name));
+                Attention.Questions.Remove(a.PaneKey);
+                Handled(a);
+                break;
+            case OrcaWatcher.AnswerResult.Gone:
+                Model.Notice = ChatNotice.Info(L.Get("Notice_AlreadyHandled"));
+                Attention.Questions.Remove(a.PaneKey);
+                RefreshChat();
+                _ = LoadPrompt(a);
+                break;
+            default:
+                // Part of the answer may have gone in: the dialog is the place to check.
+                Model.Notice = ChatNotice.Failure(L.Get("Notice_AnswerFailed"));
+                _ = LoadPrompt(a);
+                break;
+        }
+    }
+
     /// <summary>Files dropped on Clawd: open the chat on whoever needs the user most, with the paths in the message.</summary>
     public void DropFiles(IReadOnlyList<string> paths)
     {
         var text = FileDrop.Text(paths);
         if (text.Length == 0) return;
         OpenChat();
-        // A session in Orca's chat takes nothing from Clawd: the paths would be stuck in a draft
-        // that can be neither sent nor cleared.
-        if (Model.Current is not { Agent.HasTerminal: true, Id: var id }) return;
+        if (Model.Current is not { Agent.CanMessage: true, Id: var id }) return;
         Model.Mode = ChatMode.Chat;
         Model.SetDraft(id, FileDrop.Append(text, Model.Drafts.GetValueOrDefault(id) ?? ""));
     }

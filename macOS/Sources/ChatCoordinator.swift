@@ -22,6 +22,10 @@ extension AppDelegate {
     /// grew, and the session lookup is cached for a while since panes rarely change session.
     func pollTimeline() {
         guard !readingTranscript else { return }   // the last read is still running
+        if let a = chat.model.current?.agent, a.sessionId != nil {
+            pollSession(a)
+            return
+        }
         guard let a = chat.model.current?.agent, a.agentType == "claude" || a.agentType.isEmpty else {
             // Only Claude Code writes a transcript; other agents get the summary view.
             if !chat.model.timeline.isEmpty { chat.model.timeline = [] }
@@ -38,14 +42,17 @@ extension AppDelegate {
             let url = cached ?? TestHooks.fakeTranscript(for: a.paneKey)
                 ?? Transcripts.locate(paneKey: a.paneKey, path: a.path, prompt: a.prompt)
             // Only what was appended since the last read is parsed; nil when nothing changed.
-            let items = url.flatMap { u -> [TimelineItem]? in
-                let read = Transcripts.reader(for: u).timeline()
+            let reader = url.map(Transcripts.reader(for:))
+            let items = reader.flatMap { r -> [TimelineItem]? in
+                let read = r.timeline()
                 return read.changed || showingNothing ? read.items : nil
             }
+            let question = reader?.question
             DispatchQueue.main.async {
                 guard let self else { return }
                 self.readingTranscript = false
                 if let url, cached == nil { self.transcripts[key] = (url, now) }
+                if url != nil { self.setQuestion(a.asksQuestion ? question : nil, for: key) }
                 guard self.chat.model.current?.id == key else { return }
                 self.chat.model.timelineReady = true
                 // A lookup that misses once (session file being rewritten) must not blank the
@@ -54,6 +61,33 @@ extension AppDelegate {
                 if let items, items != self.chat.model.timeline { self.chat.model.timeline = items }
             }
         }
+    }
+
+    /// Follows the selected chat session's history: its latest turn and what it waits on.
+    func pollSession(_ a: OrcaAgent) {
+        readingTranscript = true
+        orca.session(of: a) { [weak self] snapshot in
+            guard let self else { return }
+            self.readingTranscript = false
+            if let snapshot { self.apply(snapshot, to: a.paneKey) }
+            guard self.chat.model.current?.id == a.paneKey else { return }
+            self.chat.model.timelineReady = true
+            if let items = snapshot?.timeline, items != self.chat.model.timeline { self.chat.model.timeline = items }
+        }
+    }
+
+    /// Keeps what a chat session waits on, so its row, card and answers match it.
+    func apply(_ snapshot: SessionSnapshot, to pane: String) {
+        approvals[pane] = snapshot.approval
+        permissions[pane] = snapshot.approval?.prompt
+        setQuestion(snapshot.question, for: pane)
+        refreshChat()
+    }
+
+    func setQuestion(_ question: AgentQuestion?, for pane: String) {
+        guard questions[pane] != question else { return }
+        questions[pane] = question
+        refreshChat()
     }
 
     /// Refreshes the terminal view; one read at a time so a slow CLI never piles up.
@@ -261,6 +295,12 @@ extension AppDelegate {
         // Open the resting section when there is nothing else to show or a resting agent is picked.
         model.showResting = model.rows.allSatisfy { $0.kind == .resting } || model.current?.kind == .resting
         selectionChanged(model.selected)
+        // Agents already waiting when Clawd started were never read: a chat session's questions
+        // look like a permission request until they are.
+        for a in orca.waiting where a.paneKey != model.selected && (a.sessionId != nil || a.asksQuestion)
+            && questions[a.paneKey] == nil && approvals[a.paneKey] == nil {
+            loadPrompt(a)
+        }
         if let draft = TestHooks.draft { model.draft = draft }
         orca.titles { [weak self] t in
             self?.titles = t
@@ -284,7 +324,7 @@ extension AppDelegate {
 
     func chatRows() -> [ChatRow] {
         func kind(_ a: OrcaAgent) -> RowKind {
-            if a.needsYou { return permissions[a.paneKey] != nil || a.state == "blocked" ? .permission : .question }
+            if a.needsYou { return asksPermission(a) ? .permission : .question }
             if a.state == "working" { return .working }
             return finishedAt(a) != nil ? .finished : .resting
         }
@@ -319,6 +359,8 @@ extension AppDelegate {
         }
         let prompt = model.current.flatMap { permissions[$0.id] }
         if prompt != model.prompt { model.prompt = prompt }
+        let question = model.current.flatMap { $0.agent.needsYou ? questions[$0.id] : nil }
+        if question != model.question { model.question = question }
     }
 
     func selectionChanged(_ key: String?) {
@@ -338,10 +380,22 @@ extension AppDelegate {
         if let key, finished.removeValue(forKey: key) != nil { updateStatus() }
     }
 
-    /// Reads the agent's screen to see whether it is showing a permission dialog; `then` runs
-    /// once that is known.
+    /// Reads what the agent is asking: a chat session's pending request or questions, or the
+    /// permission dialog on a terminal's screen and Claude's questions in its transcript. `then`
+    /// runs once that is known.
     func loadPrompt(_ a: OrcaAgent, then: (() -> Void)? = nil) {
-        guard a.hasTerminal else { then?(); return }   // answered in Orca
+        if a.sessionId != nil {
+            chat.model.busyPanes.insert(a.paneKey)
+            orca.session(of: a) { [weak self] snapshot in
+                guard let self else { return }
+                self.chat.model.busyPanes.remove(a.paneKey)
+                if let snapshot { self.apply(snapshot, to: a.paneKey) }
+                then?()
+            }
+            return
+        }
+        guard a.hasTerminal else { then?(); return }
+        if a.asksQuestion { loadQuestion(a) }
         chat.model.busyPanes.insert(a.paneKey)
         orca.screen(of: a) { [weak self] lines in
             guard let self else { return }
@@ -349,6 +403,19 @@ extension AppDelegate {
             self.chat.model.busyPanes.remove(a.paneKey)
             self.refreshChat()
             then?()
+        }
+    }
+
+    /// Claude's questions from the agent's transcript, which has them in full.
+    func loadQuestion(_ a: OrcaAgent) {
+        transcriptQueue.async { [weak self] in
+            let url = TestHooks.fakeTranscript(for: a.paneKey) ?? Transcripts.locate(paneKey: a.paneKey, path: a.path, prompt: a.prompt)
+            let question = url.flatMap { u -> AgentQuestion? in
+                let reader = Transcripts.reader(for: u)
+                _ = reader.timeline()
+                return reader.question
+            }
+            DispatchQueue.main.async { self?.setQuestion(question, for: a.paneKey) }
         }
     }
 
@@ -375,7 +442,7 @@ extension AppDelegate {
         guard let prompt = permissions[a.paneKey] else { return }
         let title = prompt.options.first { $0.number == number }?.title ?? String(localized: "Option \(number)", comment: "A permission dialog answer by its number")
         model.busyPanes.insert(a.paneKey)
-        orca.answer(number, to: a, expecting: prompt) { [weak self] result in
+        let done: @MainActor @Sendable (OrcaWatcher.AnswerResult) -> Void = { [weak self] result in
             guard let self else { return }
             model.busyPanes.remove(a.paneKey)
             self.orca.pollSoon()
@@ -383,6 +450,7 @@ extension AppDelegate {
             case .sent:
                 model.notice = .success("\(a.name): \(title)")
                 self.permissions[a.paneKey] = nil
+                self.approvals[a.paneKey] = nil
                 self.handled(a)
             case .gone:
                 // Someone answered it elsewhere (Orca, phone) or it timed out; nothing was sent.
@@ -392,6 +460,37 @@ extension AppDelegate {
                 self.loadPrompt(a)
             case .failed:
                 model.notice = .failure(String(localized: "Couldn’t send the answer. Open it in Orca to check"))
+            }
+        }
+        if let approval = approvals[a.paneKey] {
+            orca.approve(number, approval, in: a, done: done)
+        } else {
+            orca.answer(number, to: a, expecting: prompt, done: done)
+        }
+    }
+
+    func chatAnswer(_ question: AgentQuestion, _ answers: [AgentQuestion.Answer], to a: OrcaAgent) {
+        let model = chat.model
+        guard question.complete(answers) else { return }
+        model.busyPanes.insert(a.paneKey)
+        orca.answer(question, answers, to: a) { [weak self] result in
+            guard let self else { return }
+            model.busyPanes.remove(a.paneKey)
+            self.orca.pollSoon()
+            switch result {
+            case .sent:
+                model.notice = .success(String(localized: "Answered \(a.name)", comment: "%@ is the agent (worktree) name"))
+                self.questions[a.paneKey] = nil
+                self.handled(a)
+            case .gone:
+                model.notice = .info(String(localized: "Already answered, so nothing was sent"))
+                self.questions[a.paneKey] = nil
+                self.refreshChat()
+                self.loadPrompt(a)
+            case .failed:
+                // Part of the answer may have gone in: the dialog is the place to check.
+                model.notice = .failure(String(localized: "Couldn’t send the answer. Open it in Orca to check"))
+                self.loadPrompt(a)
             }
         }
     }
@@ -410,13 +509,13 @@ extension AppDelegate {
     }
 
     /// Files dropped on Clawd: open the chat on whoever needs the user most, with the paths
-    /// in the message. A session in Orca's chat takes no message, so its composer stays empty.
+    /// in the message.
     func dropFiles(_ urls: [URL]) {
         let text = FileDrop.text(for: urls)
         guard !text.isEmpty else { return }
         openChat()
         let model = chat.model
-        guard let row = model.current, row.agent.hasTerminal else { return }
+        guard let row = model.current, row.agent.canMessage else { return }
         let id = row.id
         model.mode = .chat
         model.drafts[id] = FileDrop.append(text, to: model.drafts[id] ?? "")

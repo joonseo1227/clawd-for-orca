@@ -555,4 +555,35 @@
     <value>Install Clawd {0} and restart</value>
     <comment>{0}: version, e.g. 1.0.1</comment>
   </data>
+  <data name="Notice_Answered" xml:space="preserve">
+    <value>Answered {0}</value>
+    <comment>{0}: agent name</comment>
+  </data>
+  <data name="Chat_PlaceholderChoose" xml:space="preserve">
+    <value>Choose your answers above</value>
+  </data>
+  <data name="Chat_PlaceholderQuestionsInOrca" xml:space="preserve">
+    <value>Answer the questions in Orca</value>
+  </data>
+  <data name="Timeline_Question" xml:space="preserve">
+    <value>Claude has a question</value>
+  </data>
+  <data name="Timeline_Questions" xml:space="preserve">
+    <value>Claude has questions</value>
+  </data>
+  <data name="Timeline_SendAnswers" xml:space="preserve">
+    <value>Send Answers</value>
+  </data>
+  <data name="Timeline_SendAnswersTip" xml:space="preserve">
+    <value>Send your answers to Claude</value>
+  </data>
+  <data name="Timeline_ChooseAny" xml:space="preserve">
+    <value>Choose any</value>
+  </data>
+  <data name="Timeline_SomethingElse" xml:space="preserve">
+    <value>Something else</value>
+  </data>
+  <data name="Timeline_SomethingElseOptional" xml:space="preserve">
+    <value>Something else (optional)</value>
+  </data>
 </root>

@@ -58,6 +58,8 @@ final class ChatModel {
     var screen: Screen = .loading
     var rows: [ChatRow] = []
     var prompt: PermissionPrompt?
+    var question: AgentQuestion? { didSet { if question != oldValue { answers = question.map { Array(repeating: .init(), count: $0.items.count) } ?? [] } } }
+    var answers: [AgentQuestion.Answer] = []   // choices made so far in `question`
     var drafts: [String: String] = [:]  // unsent text kept per agent
     var notice: ChatNotice?
     var busyPanes: Set<String> = []      // agents with a send or screen read in flight
@@ -69,6 +71,9 @@ final class ChatModel {
     @ObservationIgnored var onLayoutChange: (() -> Void)?
 
     var current: ChatRow? { rows.first { $0.id == selected } ?? rows.first }
+
+    /// The selected agent's question card is up.
+    var asking: Bool { question != nil && current?.kind == .question }
 
     /// The terminal view is showing: chosen, and the selected agent has a terminal.
     var showsTerminal: Bool { mode == .terminal && current?.agent.hasTerminal == true }
@@ -94,6 +99,7 @@ final class ChatModel {
 struct ChatActions {
     var send: (OrcaAgent, String) -> Void
     var answer: (OrcaAgent, Int) -> Void
+    var answerQuestion: (OrcaAgent, AgentQuestion, [AgentQuestion.Answer]) -> Void
     var key: (OrcaAgent, String) -> Void      // raw keystrokes for the terminal view
     var open: (OrcaAgent) -> Void
     var close: () -> Void

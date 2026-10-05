@@ -57,7 +57,7 @@ internal sealed partial class AppController
             if (detail is not null) { sub.AddHeader(detail); sub.AddSeparator(); }
             sub.Add(L.Get("Menu_OpenInOrca"), () => Open(a));
             // A session in Orca's chat takes no messages from Clawd, but the chat still shows it.
-            sub.Add(L.Get(!a.HasTerminal ? "Menu_ShowInClawd" : a.NeedsYou ? "Menu_ReplyWithClawd" : "Menu_TalkWithClawd"), () => OpenChat(a.PaneKey));
+            sub.Add(L.Get(!a.CanMessage ? "Menu_ShowInClawd" : a.NeedsYou ? "Menu_ReplyWithClawd" : "Menu_TalkWithClawd"), () => OpenChat(a.PaneKey));
             menu.AddSubmenu(title, sub);
         }
 

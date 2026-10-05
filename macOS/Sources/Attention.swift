@@ -32,6 +32,14 @@ extension AppDelegate {
 
     static let recentFinish: TimeInterval = 3600
 
+    /// The agent waits on a permission request rather than a reply or Claude's questions. Orca
+    /// reports a terminal's permission dialog as "waiting", like a question, so the screen tells
+    /// them apart; a chat session reports its questions as "blocked", like a request.
+    func asksPermission(_ a: OrcaAgent) -> Bool {
+        guard questions[a.paneKey] == nil, !a.asksQuestion else { return false }
+        return permissions[a.paneKey] != nil || a.state == "blocked"
+    }
+
     func orcaChanged(from old: [OrcaAgent], to new: [OrcaAgent]) {
         let now = Date()
         let before = Dictionary(old.map { ($0.paneKey, $0) }, uniquingKeysWith: { a, _ in a })
@@ -41,6 +49,8 @@ extension AppDelegate {
             if prev?.state == a.state { continue }
             acknowledged[a.paneKey] = nil
             permissions[a.paneKey] = nil
+            approvals[a.paneKey] = nil
+            questions[a.paneKey] = nil
             if a.needsYou {
                 waitingSince[a.paneKey] = now
                 lastNudge[a.paneKey] = now
@@ -50,7 +60,7 @@ extension AppDelegate {
                 let notify = !looking(at: a) && shouldNotify
                 loadPrompt(a) { [weak self] in
                     guard let self, notify else { return }
-                    let permission = self.permissions[a.paneKey] != nil || a.state == "blocked"
+                    let permission = self.asksPermission(a)
                     self.notifier.post(permission ? .permission : .question, agent: a,
                                        title: permission ? String(localized: "Permission needed") : String(localized: "Reply needed"), body: a.ask, sound: self.soundOn)
                 }
@@ -84,8 +94,7 @@ extension AppDelegate {
     }
 
     func announceDone(_ a: OrcaAgent, took: TimeInterval?) {
-        // A session in Orca's chat can only be read from Clawd, not talked to.
-        let hint = a.hasTerminal
+        let hint = a.canMessage
             ? took.map { String(localized: "Took \(duration($0)) · Click to keep talking", comment: "%@ is how long the task took, e.g. 3 min") }
                 ?? String(localized: "Click to keep talking")
             : took.map { String(localized: "Took \(duration($0)) · Click to view", comment: "%@ is how long the task took, e.g. 3 min") }
@@ -112,14 +121,14 @@ extension AppDelegate {
         if let first = waiting.first {
             // Orca reports permission dialogs as "waiting" too; the screen tells them apart.
             let prompt = permissions[first.paneKey]
-            let isPermission = prompt != nil || first.state == "blocked"
+            let isPermission = asksPermission(first)
             let waited = Date().timeIntervalSince(since(first))
             var hint: String
-            if first.hasTerminal {
+            if first.canMessage {
                 hint = waited < 60 ? String(localized: "Just started waiting · Click to reply")
                     : String(localized: "Waiting for \(duration(waited)) · Click to reply", comment: "%@ is a duration, e.g. 3 min")
             } else {
-                // Answered in Orca; the click shows what it asks.
+                // Can't take an answer from Clawd; the click shows what it asks.
                 hint = waited < 60 ? String(localized: "Just started waiting · Click to view")
                     : String(localized: "Waiting for \(duration(waited)) · Click to view", comment: "%@ is a duration, e.g. 3 min")
             }
@@ -128,7 +137,7 @@ extension AppDelegate {
             }
             let card = Sign(tone: .urgent, symbol: isPermission ? "hand.raised.fill" : "bubble.left.fill",
                             title: isPermission ? String(localized: "Permission needed") : String(localized: "Reply needed"), name: first.name,
-                            detail: prompt?.detail.last ?? first.ask, hint: hint)
+                            detail: isPermission ? prompt?.detail.last ?? first.ask : questions[first.paneKey]?.items.first?.question ?? first.ask, hint: hint)
             sign.set(card, action: { [weak self] in self?.openChat(select: first.paneKey) }, onClose: { [weak self] in
                 // Seen it: no card or nagging for this request until the agent's state changes.
                 for a in waiting { self?.acknowledged[a.paneKey] = a.state }

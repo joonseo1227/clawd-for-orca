@@ -16,7 +16,7 @@ final class AgentNotifier: NSObject, UNUserNotificationCenterDelegate {
         case permission = "agent.permission"
         case done = "agent.done"
     }
-    /// For a session in Orca's chat, which can't take a reply from Clawd.
+    /// For an agent a typed reply can't answer: Claude's questions take choices.
     private static let openOnly = "agent.open-only"
 
     /// What the user did with a notification: the pane it was about, the action, typed text.
@@ -71,7 +71,7 @@ final class AgentNotifier: NSObject, UNUserNotificationCenterDelegate {
             content.title = title
             content.subtitle = agent.name
             content.body = body ?? ""
-            content.categoryIdentifier = agent.hasTerminal ? category.rawValue : Self.openOnly
+            content.categoryIdentifier = agent.canMessage && !agent.asksQuestion ? category.rawValue : Self.openOnly
             content.userInfo = ["pane": agent.paneKey]
             content.threadIdentifier = agent.paneKey   // one stack per agent
             content.interruptionLevel = category == .done ? .active : .timeSensitive
