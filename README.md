@@ -27,7 +27,7 @@ app is a 3.7 MB download and uses about 1% CPU when idle.
 
 ### macOS
 
-Download `Clawd-1.0.0-macOS.dmg` from [GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases), open it
+Download `Clawd-1.1.0-macOS.dmg` from [GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases), open it
 and drag `Clawd.app` to the Applications folder. The app is notarized by Apple.
 
 Requires an Apple silicon Mac with macOS 15 or later, and [Orca](https://www.onorca.dev).
@@ -36,7 +36,7 @@ Requires an Apple silicon Mac with macOS 15 or later, and [Orca](https://www.ono
 
 ### Windows
 
-Download `Clawd-1.0.0-Windows-x64.msi` from [GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases)
+Download `Clawd-1.1.0-Windows-x64.msi` from [GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases)
 and run it. Clawd installs for your account without an administrator prompt and appears in the
 Start menu. The installer is not code-signed, so SmartScreen may ask you to confirm it.
 

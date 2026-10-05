@@ -24,7 +24,7 @@ Clawd 在各平台上都是原生应用：macOS 版使用 Swift，Windows 版使
 
 ### macOS
 
-从 [GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases) 下载 `Clawd-1.0.0-macOS.dmg`，
+从 [GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases) 下载 `Clawd-1.1.0-macOS.dmg`，
 打开后将 `Clawd.app` 拖到“应用程序”文件夹。该应用已通过 Apple 公证。
 
 需要 macOS 15 或更高版本的 Apple silicon Mac，以及 [Orca](https://www.onorca.dev)。
@@ -33,7 +33,7 @@ Clawd 在各平台上都是原生应用：macOS 版使用 Swift，Windows 版使
 
 ### Windows
 
-从 [GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases) 下载 `Clawd-1.0.0-Windows-x64.msi`
+从 [GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases) 下载 `Clawd-1.1.0-Windows-x64.msi`
 并运行。无需管理员权限，会安装到当前用户并添加到“开始”菜单。安装程序没有代码签名，SmartScreen 可能会要求确认。
 
 需要 x64 版 Windows 11 和 Windows 版 [Orca](https://www.onorca.dev)。安装方法和已知限制请参阅

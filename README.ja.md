@@ -26,7 +26,7 @@ macOS では Swift、Windows では WinUI 3 で作られたネイティブアプ
 
 ### macOS
 
-[GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases) から `Clawd-1.0.0-macOS.dmg` を
+[GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases) から `Clawd-1.1.0-macOS.dmg` を
 ダウンロードして開き、`Clawd.app` をアプリケーションフォルダにドラッグしてください。Apple の公証済みです。
 
 macOS 15 以降の Apple silicon Mac と [Orca](https://www.onorca.dev) が必要です。
@@ -35,7 +35,7 @@ macOS 15 以降の Apple silicon Mac と [Orca](https://www.onorca.dev) が必�
 
 ### Windows
 
-[GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases) から `Clawd-1.0.0-Windows-x64.msi` を
+[GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases) から `Clawd-1.1.0-Windows-x64.msi` を
 ダウンロードして実行してください。管理者権限なしで現在のユーザーにインストールされ、スタートメニューに追加されます。
 インストーラーにはコード署名がないため、SmartScreen が確認を求めることがあります。
 

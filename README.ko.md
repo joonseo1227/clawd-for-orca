@@ -26,7 +26,7 @@ macOS에서는 Swift로, Windows에서는 WinUI 3로 만든 네이티브 앱입�
 
 ### macOS
 
-[GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases)에서 `Clawd-1.0.0-macOS.dmg`를
+[GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases)에서 `Clawd-1.1.0-macOS.dmg`를
 받아 열고, `Clawd.app`을 응용 프로그램 폴더로 끌어다 놓으면 됩니다. Apple 공증을 거친 앱입니다.
 
 macOS 15 이상의 Apple silicon Mac과 [Orca](https://www.onorca.dev)가 필요합니다.
@@ -35,7 +35,7 @@ macOS 15 이상의 Apple silicon Mac과 [Orca](https://www.onorca.dev)가 필요
 
 ### Windows
 
-[GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases)에서 `Clawd-1.0.0-Windows-x64.msi`를
+[GitHub Releases](https://github.com/joonseo1227/clawd-for-orca/releases)에서 `Clawd-1.1.0-Windows-x64.msi`를
 받아 실행하면 됩니다. 관리자 권한 없이 현재 사용자 계정에 설치되고 시작 메뉴에 추가됩니다. 코드 서명이
 없는 설치 파일이라 SmartScreen이 확인을 요청할 수 있습니다.
 
